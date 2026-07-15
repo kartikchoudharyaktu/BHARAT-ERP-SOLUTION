@@ -1961,4 +1961,5 @@ Proprietary — All rights reserved unless otherwise licensed by the project own
 **Kartik Choudhary**
 B.Tech CSE, Raj Kumar Goel Institute of Technology and Management, Ghaziabad (AKTU)
 📧 [kartikmzn7@gmail.com](mailto:kartikmzn7@gmail.com)
-🔗 [GitHub](https://github.com/kartikchoudharyaktu) · [LinkedIn](https://linkedin.com/in/kartik-choudharyaktu)
+🔗 [GitHub] (https://github.com/kartikchoudharyaktu) ·
+   LinkedIn https://linkedin.com/in/kartik-choudharyaktu
