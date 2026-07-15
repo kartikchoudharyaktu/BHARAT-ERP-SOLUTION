@@ -1,52 +1,81 @@
-BHARAT ERP
-A comprehensive, multi-domain Enterprise Resource Planning platform built for Indian enterprises — unifying accounting, CRM, payroll, statutory compliance, and forensic audit into a single real-time console, backed by a suite of 25+ specialized executive cockpits for finance, tax, logistics, and risk management, running on an 833-file Spring Boot backend.
-Developed by Kartik Choudhary Portal Status: Active · Secure · Real-Time Sync Enabled · Backend Build: SUCCESS (833 Java files)
-________________________________________
-Table of Contents
-1.	Overview
-2.	Screenshots
-3.	Architecture Deep-Dive
-4.	Repository Structure
-5.	Core Modules — Full Domain Deep-Dive
-6.	Advanced Cockpits
-7.	Domain Package Reference
-8.	Complete Backend File Index (All 833 Files)
-9.	Frontend Structure
-10.	Tech Stack
-11.	Getting Started
-12.	Configuration
-13.	API Documentation
-14.	Architecture Governance & ADR Process
-15.	Contributing Guide
-16.	Changelog
-17.	Roadmap
-18.	License
-19.	Author
-________________________________________
-Overview
+# BHARAT ERP
+
+**A comprehensive, multi-domain Enterprise Resource Planning platform** built for Indian enterprises — unifying accounting, CRM, payroll, statutory compliance, and forensic audit into a single real-time console, backed by a suite of 25+ specialized executive cockpits for finance, tax, logistics, and risk management, running on an 833-file Spring Boot backend.
+
+> Developed by **Kartik Choudhary**
+> Portal Status: Active · Secure · Real-Time Sync Enabled · Backend Build: SUCCESS (833 Java files)
+
+---
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Screenshots](#screenshots)
+3. [Architecture Deep-Dive](#architecture-deep-dive)
+4. [Repository Structure](#repository-structure)
+5. [Core Modules — Full Domain Deep-Dive](#core-modules--full-domain-deep-dive)
+6. [Advanced Cockpits](#advanced-cockpits)
+7. [Domain Package Reference](#domain-package-reference)
+8. [Complete Backend File Index (All 833 Files)](#complete-backend-file-index-all-833-files)
+9. [Frontend Structure](#frontend-structure)
+10. [Tech Stack](#tech-stack)
+11. [Getting Started](#getting-started)
+12. [Configuration](#configuration)
+13. [API Documentation](#api-documentation)
+14. [Architecture Governance & ADR Process](#architecture-governance--adr-process)
+15. [Contributing Guide](#contributing-guide)
+16. [Changelog](#changelog)
+17. [Roadmap](#roadmap)
+18. [License](#license)
+19. [Author](#author)
+
+---
+
+## Overview
+
 BHARAT ERP is a full-stack enterprise platform that consolidates the core operations of an Indian business — ledger accounting, sales/CRM pipelines, payroll & statutory compliance, and forensic-grade audit — into a single, secure, real-time console.
-The backend is a large Spring Boot application (833 Java source files, verified via full recursive scan) organized into domain packages under com.bharaterp, spanning finance, HR, compliance, CRM, inventory, logistics, supply chain, secretarial affairs, security, AI/agentic orchestration, and a wide range of industry-specific verticals (BFSI, healthcare, construction/RERA, agriculture, education, manufacturing, retail, and more). The frontend is a React 18 + Vite single-page application, styled with Tailwind CSS, delivering a fast, real-time operational dashboard experience across every module.
-Beyond the four core modules (Ledger, CRM, Payroll, Audit), the platform ships with an Advanced Cockpits command palette — over 25 specialized dashboards purpose-built for functions like trade finance, tax simulation, AML forensics, IoT predictive maintenance, and RERA compliance, all accessible from a single unified navigation bar.
-________________________________________
-Screenshots
-Ledger — Tally-Grade Double-Entry Accounting
+
+The backend is a large Spring Boot application (833 Java source files, verified via full recursive scan) organized into domain packages under `com.bharaterp`, spanning finance, HR, compliance, CRM, inventory, logistics, supply chain, secretarial affairs, security, AI/agentic orchestration, and a wide range of industry-specific verticals (BFSI, healthcare, construction/RERA, agriculture, education, manufacturing, retail, and more). The frontend is a React 18 + Vite single-page application, styled with Tailwind CSS, delivering a fast, real-time operational dashboard experience across every module.
+
+Beyond the four core modules (Ledger, CRM, Payroll, Audit), the platform ships with an **Advanced Cockpits** command palette — over 25 specialized dashboards purpose-built for functions like trade finance, tax simulation, AML forensics, IoT predictive maintenance, and RERA compliance, all accessible from a single unified navigation bar.
+
+---
+
+## Screenshots
+
+### Ledger — Tally-Grade Double-Entry Accounting
 Multi-currency voucher posting with forex sweep, auto-balanced statutory audit reconciliation, dual posting (DR/CR) ledger matrix, and full journal voucher workflows with legal audit compliance remarks.
-  
-CRM — Enterprise B2B Pipeline Management
+
+![Ledger Module](./screenshots/ledger-module.jpg)
+
+### CRM — Enterprise B2B Pipeline Management
 Live pipeline sync, deal valuation tracking (₹), funnel stage control (New → Negotiation → Deal Won), and lead acquisition attribution across marketing channels (Website, Trade Show, Referral).
-  
-Payroll — Statutory Payroll & Labour Compliance Console
+
+![CRM Module](./screenshots/crm-module.jpg)
+
+### Payroll — Statutory Payroll & Labour Compliance Console
 EPF (12%) / ESI (4.75%)-compliant disbursal engine with automated deduction computation, department-level allocation, and net payout rollout per employee.
-  
-Audit — Statutory & Forensic Investigation Desk
+
+![Payroll Module](./screenshots/payroll-module.jpg)
+
+### Audit — Statutory & Forensic Investigation Desk
 ICAI & CARO-aligned statutory financial fraud forensic investigation scanner, MCA XBRL gateway sync, DGGI tax telemetry channel, CARO invariant clause validation (21/21), and immutable integrity scoring.
-  
-Advanced Cockpits — Specialized Enterprise Add-ons
+
+![Audit Module](./screenshots/audit-module.jpg)
+
+### Advanced Cockpits — Specialized Enterprise Add-ons
 A dedicated command palette exposing 25+ specialized cockpits for finance, tax, logistics, and compliance teams.
-   
-________________________________________
-Architecture Deep-Dive
-High-Level Architecture
+
+![Advanced Cockpits Menu](./screenshots/advanced-cockpits-menu.jpg)
+![Advanced Cockpits List](./screenshots/advanced-cockpits-list.jpg)
+
+---
+
+## Architecture Deep-Dive
+
+### High-Level Architecture
+
+```
 ┌───────────────────────────────────────────────────┐
 │  Frontend — React 18 + Vite + Tailwind CSS         │
 │  Real-time dashboard console, cockpit navigation   │
@@ -66,7 +95,11 @@ High-Level Architecture
 │  Data Layer — Relational DB (via Spring Data JPA)    │
 │  + Redis (caching layer)                              │
 └─────────────────────────────────────────────────────────┘
-Request Lifecycle
+```
+
+### Request Lifecycle
+
+```
 Client Request
     │
     ▼
@@ -86,18 +119,26 @@ Client Request
     │
     ▼
 Response serialized back to client as JSON
-Security Flow (JWT)
-1.	Client authenticates via AuthController → AuthService validates credentials against UserRepository (backed by UserDetailsServiceImpl).
-2.	On success, JwtTokenProvider issues a signed JWT (HS256).
-3.	Every subsequent request carries Authorization: Bearer <token>.
-4.	JwtAuthenticationFilter (a OncePerRequestFilter) intercepts, validates, and populates the Spring Security context per-request — no server-side session state.
-5.	SecurityConfig defines which endpoints require authentication vs. public access.
-6.	Additional layers: ZeroTrustMaskingService / ZeroTrustEnforcer for data masking and threat detection, RbacService for fine-grained role/permission checks, ApiTokenBucketShield for rate limiting.
-Caching Strategy
-•	Cache-aside pattern via Redis (RedisConfig), used for frequently-read reference data (compliance rating slabs, treasury burn snapshots, dashboard aggregates).
-•	HybridCacheSyncService reconciles cache state against the source of truth on a scheduled basis.
-•	CacheSyncQueue entity tracks pending sync operations for eventual consistency scenarios.
-Data Flow — Example: Payroll Disbursal
+```
+
+### Security Flow (JWT)
+
+1. Client authenticates via `AuthController` → `AuthService` validates credentials against `UserRepository` (backed by `UserDetailsServiceImpl`).
+2. On success, `JwtTokenProvider` issues a signed JWT (HS256).
+3. Every subsequent request carries `Authorization: Bearer <token>`.
+4. `JwtAuthenticationFilter` (a `OncePerRequestFilter`) intercepts, validates, and populates the Spring Security context per-request — no server-side session state.
+5. `SecurityConfig` defines which endpoints require authentication vs. public access.
+6. Additional layers: `ZeroTrustMaskingService` / `ZeroTrustEnforcer` for data masking and threat detection, `RbacService` for fine-grained role/permission checks, `ApiTokenBucketShield` for rate limiting.
+
+### Caching Strategy
+
+- **Cache-aside pattern** via Redis (`RedisConfig`), used for frequently-read reference data (compliance rating slabs, treasury burn snapshots, dashboard aggregates).
+- `HybridCacheSyncService` reconciles cache state against the source of truth on a scheduled basis.
+- `CacheSyncQueue` entity tracks pending sync operations for eventual consistency scenarios.
+
+### Data Flow — Example: Payroll Disbursal
+
+```
 PayrollController
     │
     ▼
@@ -111,8 +152,13 @@ Payslip entity persisted via PayslipRepository
     │
     ▼
 ActivityLogService records an audit trail entry (security.audit package)
-________________________________________
-Repository Structure
+```
+
+---
+
+## Repository Structure
+
+```
 bharat_erp_solution/
 ├── backend/
 │   ├── src/main/java/com/bharaterp/    # 45 domain packages, 833 files (see full index below)
@@ -131,258 +177,445 @@ bharat_erp_solution/
 │   └── postcss.config.js
 ├── screenshots/                          # Module screenshots referenced in this README
 └── README.md                             # This file
-________________________________________
-Core Modules — Full Domain Deep-Dive
+```
+
+---
+
+## Core Modules — Full Domain Deep-Dive
+
 This section documents every major backend domain in detail — what it covers, and representative classes within it.
-HR & Payroll (com.bharaterp.hr) — 114 files
-The largest domain overall — Employee lifecycle (onboarding/offboarding), Attendance & Leave, Payroll (PF/ESI/PT/TDS, Full & Final Settlement, Gratuity, Bank Disbursement), Performance & Appraisal cycles, Recruitment, Shift Scheduling, Compensation Benchmarking, Workforce Capacity Planning, Gig Worker Contracts, Expatriate Shadow Payroll, and Succession Planning.
-Key classes: ApplicantTrackingService, AppraisalCycle, AppraisalCycleRepository, AttendanceController, AttendanceRecord, AttendanceRepository, AttendanceService, BankDisbursementService, BenefitController, Candidate, CandidateRepository, CompanyHoliday, CompanyHolidayRepository, CompensationBenchmarkController, CompensationBenchmarkService, Employee, EmployeeBenefit, EmployeeBenefitRepository, EmployeeBenefitService, EmployeeController, EmployeeRepository, EmployeeService, EmployeeSkill, EmployeeSkillRepository, EngagementSurvey, EngagementSurveyController, EngagementSurveyRepository, EngagementSurveyService, ExpatriatePayrollController, ExpatriatePayrollNode, ExpatriatePayrollRepository, ExpatriateShadowPayrollEngine, ExpenseAuditVoucher, ExpenseAuditVoucherRepository, ExpenseClaim, ExpenseClaimRepository, ExpenseController, ExpenseOcrApiController, ExpenseOcrAuditController, ExpenseOcrAuditEngine, ExpenseOcrClaim, ExpenseOcrClaimRepository, ExpenseService, FnfService, GigContractorPayout, GigContractorPayoutRepository, GigWorkerContractController, GigWorkerContractLedger, GratuityService, HrAdminController, HrDocument, HrDocumentController, HrDocumentRepository, HrDocumentService, InterviewSchedulerService, JobRequisition, JobRequisitionRepository, LeaveBalance, LeaveBalanceRepository, LeaveBalanceService ...and 52 more (see full file index)
-________________________________________
-Industry Verticals (com.bharaterp.industry) — 102 files
-Vertical-specific modules covering BFSI (AML, KYC, loans), Construction/RERA (escrow, project costing), Education (admissions, LMS), Healthcare/Pharma (drug batches, prescriptions, Schedule H compliance), Retail (POS, loyalty), Manufacturing (BOM/MRP, predictive maintenance), Agriculture (traceability, mandi pricing), Logistics, Professional Services, Public Sector, and Aviation.
-Key classes: AdmissionService, AdvancedWindsController, AgriBatch, AgriBatchRepository, AgriTraceabilityService, AgricultureController, AmlAlert, AmlAlertRepository, AmlMonitoringService, AmlTransaction, AmlTransactionRepository, Applicant, ApplicantRepository, AviationLogisticsService, BfsiController, BomEntry, BomEntryRepository, BudgetAllocation, BudgetExecutionService, CapitalMarketsService, CitizenProfile, CitizenProfileRepository, CitizenServicePortal, ClientPortalService, ConstructionMilestone, ConstructionMilestoneRepository, ConstructionProject, ConstructionProjectRepository, ConstructionProjectService, CoreBankingIntegration, CourseEnrollment, CourseEnrollmentRepository, CropBatch, CropBatchRepository, DrugBatch, DrugBatchRepository, DrugMaster, DrugMasterRepository, ECommercePlatformService, EducationController, Engagement, EngagementRepository, EnvironmentalTrackerService, FarmInventory, FeeStructure, FleetVehicle, FreightOrder, FreightOrderRepository, GrantApplication, GrantApplicationRepository, HealthcareController, InsuranceClaimsService, InventorySyncService, KycRecord, KycRecordRepository, KycVerificationService, LmsIntegrationService, LoanApplication, LoanApplicationRepository, LogisticsController ...and 42 more (see full file index)
-________________________________________
-Finance (com.bharaterp.finance) — 96 files
-The largest financial domain — covers Accounts Payable/Receivable, Fixed Assets (incl. depreciation & revaluation), Bank Reconciliation & Cash Pooling, Budgeting, Cash Flow Forecasting, Consolidation, Credit Risk Scoring, Currency Triangulation, Hedge Accounting, Revenue Recognition (ASC 606), and Transfer Pricing.
-Key classes: AccountsPayableController, AccountsPayableService, AccountsReceivableController, AccountsReceivableService, Asc606SubscriptionApiController, Asc606SubscriptionEngine, Asc606SubscriptionLedger, Asc606SubscriptionLedgerRepository, AssetFairValue, AssetFairValueController, AssetFairValueRepository, AssetFairValueService, AssetRevaluation, AssetRevaluationController, AssetRevaluationRepository, AssetRevaluationService, BankCashPool, BankCashPoolRepository, BankCashPoolingController, BankCashPoolingService, BankReconciliationController, BankReconciliationService, BankStatementMt940Parser, BankStatementParserController, BankStatementParserRepository, BankTransaction, BankTransactionRepository, BudgetController, BudgetLine, BudgetLineRepository, BudgetService, CashFlowForecastController, CashFlowForecastService, ConsolidationController, ConsolidationService, CreditRiskScoringController, CreditRiskScoringEngine, CurrencyTriangulation, CurrencyTriangulationController, CurrencyTriangulationRepository, CurrencyTriangulationService, Customer, CustomerController, CustomerCreditScore, CustomerCreditScoreRepository, CustomerInvoice, CustomerInvoiceRepository, CustomerRepository, DepreciationService, EquityDividend, EquityDividendController, EquityDividendRepository, EquityDividendService, ExportController, ExportService, FixedAsset, FixedAssetController, FixedAssetRepository, FixedAssetService, HedgeAccountingController ...and 35 more (see full file index)
-________________________________________
-CRM (com.bharaterp.crm) — 52 files
-Full B2B CRM: Accounts & Contacts, Leads & Opportunities, Activities & Tasks, Assignment Rules (incl. round-robin pooling), Custom Fields, Deal Products, Marketing Campaigns, and Email Sequences.
-Key classes: Account, AccountContact, AccountContactRepository, AccountController, AccountRepository, AccountService, Activity, ActivityController, ActivityRepository, ActivityService, AssignmentRule, AssignmentRuleController, AssignmentRuleRepository, AssignmentRuleService, Campaign, CampaignController, CampaignRecipient, CampaignRecipientRepository, CampaignRepository, CampaignService, CustomFieldController, CustomFieldDefinition, CustomFieldDefinitionRepository, CustomFieldService, CustomFieldValue, CustomFieldValueRepository, EmailSequence, EmailSequenceController, EmailSequenceRepository, EmailSequenceService, Lead, LeadController, LeadRepository, LeadService, Opportunity, OpportunityController, OpportunityProduct, OpportunityProductController, OpportunityProductRepository, OpportunityProductService, OpportunityRepository, OpportunityService, RoundRobinPool, RoundRobinPoolRepository, SequenceEnrollment, SequenceEnrollmentRepository, SequenceStep, SequenceStepRepository, Task, TaskController, TaskRepository, TaskService
-________________________________________
-Compliance (com.bharaterp.compliance) — 46 files
-Statutory and regulatory compliance: EHS Incidents, E-Invoice & E-Way Bill, DPDPA Consent Audit, GST, Legal Matter Tracking, MDM Golden Records, Data Migration, and the Whistleblower Vault.
-Key classes: ComplianceAgentService, ComplianceAsService, DPDPComplianceApiController, DPDPComplianceEngine, DpdpConsentAudit, DpdpConsentAuditRepository, EInvoiceComplianceController, EInvoiceExchangeService, EhsIncidentApiController, EhsIncidentMatrixEngine, EhsIncidentRecord, EhsIncidentRecordRepository, EhsIncidentRepository, EhsIncidentTrackingService, EnterpriseMigrationCockpitController, EnterpriseMigrationCockpitService, EwayBillApiController, EwayBillDetails, EwayBillRepository, GlobalComplianceController, GlobalTaxEngine, GstInvoiceSummary, GstReturnApiController, LegalMatter, LegalMatterController, LegalMatterRepository, LegalMatterTrackingService, MdmGoldenRecord, MdmGoldenRecordApiController, MdmGoldenRecordEngine, MdmGoldenRecordRepository, MigrationDataChunk, MigrationDataChunkRepository, MigrationJobRegistry, MigrationJobRegistryRepository, TaxAgentService, UniversalEInvoiceExchange, UniversalGlobalTaxEngine, WhistleblowerCase, WhistleblowerCaseRepository, WhistleblowerVaultController, WhistleblowerVaultService
-________________________________________
-Supply Chain (com.bharaterp.supplychain) — 34 files
-Container/Load Optimization, Dropshipping Orchestration, GS1 Barcode Serialization, IoT Plant Telemetry, Vendor-Managed Inventory, Wave-Picking Optimization, and Distributed Order Routing (DOM).
-Key classes: ContainerLoadJob, ContainerLoadJobRepository, ContainerLoadOptimizationController, ContainerLoadOptimizationService, DistributedOrderRoute, DistributedOrderRouteRepository, DistributedOrderRoutingController, DistributedOrderRoutingService, DropshipJob, DropshipJobRepository, DropshipOrchestrator, DropshipOrchestratorController, Gs1Barcode, Gs1BarcodeGeneratorController, Gs1BarcodeGeneratorService, Gs1BarcodeRepository, MandiTradeApiController, MandiTradeTicket, MandiTradeTicketRepository, PlantIotApiController, PlantIotTelemetry, PlantIotTelemetryRepository, SupplyChainGatewayController, SupplyChainShipment, SupplyChainShipmentRepository, VendorManagedInventoryController, VendorManagedInventoryEngine, VmiThresholdNode, VmiThresholdRepository, WavePickingJob, WavePickingJobRepository, WavePickingOptimizationController, WavePickingOptimizationService
-________________________________________
-Audit & Secretarial (com.bharaterp.audit) — 33 files
-Statutory audit and secretarial affairs: Audit Engagements, Board Meetings, CARO Clause Compliance, ROC Filings, Secretarial Audit Reports, and XBRL Filing Generation.
-Key classes: AuditChecklistAutomationService, AuditChecklistItem, AuditChecklistItemRepository, AuditEngagement, AuditEngagementController, AuditEngagementRepository, AuditEngagementService, AuditSodEnforcer, BoardMeeting, BoardMeetingController, BoardMeetingRepository, CaroClauseResponse, CaroClauseResponseRepository, CaroComplianceGuardrail, CaroRuleEngine, ContinuousEvidenceCollector, McaFilingExporter, RocFiling, RocFilingController, RocFilingRepository, RocFilingService, SecretarialAuditReport, SecretarialAuditReportController, SecretarialAuditReportRepository, SecretarialComplianceController, SecretarialComplianceService, StatutoryRegisterService, UpgradedAuditController, XbrlFiling, XbrlFilingController, XbrlFilingRepository, XbrlGeneratorService, XbrlReportGenerator
-________________________________________
-Inventory (com.bharaterp.inventory) — 33 files
-Products, Purchase Orders, Sales Orders, Warehouse & Stock Management, Customer Credit Limits, and Weight-Based (Catch-Weight) Stock tracking.
-Key classes: CatchWeightStock, CatchWeightStockRepository, CustomerCreditController, CustomerCreditLimit, CustomerCreditLimitRepository, CustomerCreditService, InventoryApiController, Product, ProductController, ProductRepository, ProductService, PurchaseOrder, PurchaseOrderController, PurchaseOrderItem, PurchaseOrderItemRepository, PurchaseOrderRepository, PurchaseOrderService, SalesOrder, SalesOrderController, SalesOrderItem, SalesOrderItemRepository, SalesOrderRepository, SalesOrderService, StockItem, StockItemRepository, VariableWeightStockController, VariableWeightStockEngine, Warehouse, WarehouseController, WarehouseRepository, WarehouseService, WarehouseStock, WarehouseStockRepository
-________________________________________
-Infrastructure (com.bharaterp.infrastructure) — 28 files
-Distributed systems infrastructure: DB Grid (sharding, replication, failover, write-ahead logging, deadlock prevention), IoT Edge (device auth, MQTT/OPC-UA bridges, telemetry processing), and AI Governance Training.
-Key classes: AiImplementationTrainingService, ClusterConfigurationRegistry, ClusterHeartbeatMonitor, ClusterReplicationAuditor, DataConsistencyBroker, DataPurgingArchiver, DataSlicingReconciler, DeadlockPreventionEngine, DeviceFirmwareValidator, DistributedPartitionManager, DistributedShardingRouter, DistributedSnapshotEngine, DynamicQueryOptimizer, EdgeDataBufferCache, EdgeTelemetryProcessor, FailoverClusterManager, HardwareDeviceAuthenticator, HardwareEdgeReconciler, IndustryPlclinkingService, IngressDataSpikeMitigator, IoTHeartbeatMonitor, MqttBrokerConnector, OpcUaProtocolBridge, QueryRoutingLoadBalancer, RfidBatchIngestionEngine, TelemetryAnomalyFilter, WriteAheadLogEngine, WriteBufferFlushEngine
-________________________________________
-Security (com.bharaterp.security) — 26 files
-RBAC (roles & permissions), SSO, Activity Audit Logging, API Token Bucket Shielding (rate limiting), Zero-Trust Threat Detection, and ZKP (Zero-Knowledge Proof) Audit Attestation.
-Key classes: AIThreatDetection, ActivityLog, ActivityLogController, ActivityLogRepository, ActivityLogService, ApiShieldPolicy, ApiShieldPolicyRepository, ApiTokenBucketShield, ApiTokenBucketShieldController, AuditLogAspect, Permission, PermissionRepository, RbacController, RbacService, RolePermission, RolePermissionRepository, SecurityIntegrityGuard, SharedSsoCoreController, SharedSsoCoreService, SsoSessionToken, SsoSessionTokenRepository, ZeroTrustEnforcer, ZkpAuditAttestation, ZkpAuditAttestationController, ZkpAuditAttestationRepository, ZkpAuditAttestationService
-________________________________________
-Backend Core / Config (com.bharaterp.backend) — 25 files
-Core application bootstrap and configuration: JWT Auth, Kafka, RabbitMQ, Redis, Swagger/OpenAPI, plus the AuthController/AuthService and core User entity.
-Key classes: AiCopilotController, AiCopilotService, AuthController, AuthService, BackendApplication, CustomsClearanceService, DataMaskingService, FreightBillingService, GlobalizationService, IoTEventController, IoTEventService, JwtAuthenticationFilter, JwtTokenProvider, KafkaConfig, OpenApiMetadataConfig, RabbitMqConfig, RedisConfig, RouteOptimizationService, SecurityConfig, SwaggerConfig, User, UserDetailsServiceImpl, UserRepository, VahanIntegrationService, ZeroTrustMaskingService
-________________________________________
-Core Platform Utilities (com.bharaterp.core) — 22 files
-Cross-cutting platform concerns: Audit Trail Interceptor, Hybrid Cache Sync, Feature Flag Management, Org Role Hierarchy, and Distributed Transaction Coordination.
-Key classes: AuditTrailInterceptor, CacheSyncQueue, CacheSyncQueueRepository, DistributedTransactionRegistry, DistributedTransactionRegistryRepository, DistributedTxCoordinatorController, DistributedTxCoordinatorEngine, FeatureFlagManagementController, FeatureFlagManagementService, FeatureFlagRegistry, FeatureFlagRegistryRepository, HybridCacheSyncController, HybridCacheSyncService, OrgRoleHierarchyController, OrgRoleHierarchyService, OrgRoleNode, OrgRoleNodeRepository, SecurityAuditBlock, SecurityAuditBlockRepository, SecurityAuditController, TransactionParticipantNode, TransactionParticipantNodeRepository
-________________________________________
-GST & Tax (com.bharaterp.gst) — 19 files
-GST Invoicing, GSTR Filing, HSN Mapping, and E-Way Bill generation.
-Key classes: EWayBill, EWayBillController, EWayBillRepository, EWayBillService, GstCalculationService, GstInvoice, GstInvoiceController, GstInvoiceItem, GstInvoiceItemRepository, GstInvoiceRepository, GstInvoiceService, GstrFilingController, GstrFilingRecord, GstrFilingRecordRepository, GstrFilingService, HsnMappingController, HsnMappingService, HsnMaster, HsnMasterRepository
-________________________________________
-Sales (com.bharaterp.sales) — 19 files
-Sales Invoicing, CPQ (Configure-Price-Quote) Engine, Partner Rebate Ledger, and Tiered Volume Pricing.
-Key classes: CpqEngineController, CpqEngineService, CpqQuote, CpqQuoteRepository, PartnerRebateLedger, PartnerRebateLedgerController, PartnerRebateLedgerRepository, PartnerRebateLedgerService, PricingTier, PricingTierRepository, RebateSlab, RebateSlabRepository, SalesInvoice, SalesInvoiceApiController, SalesInvoiceRepository, TieredVolumePricing, TieredVolumePricingController, TieredVolumePricingEngineService, TieredVolumePricingRepository
-________________________________________
-Autonomous Agents (com.bharaterp.autonomous) — 18 files
-Autonomous, agent-driven automation: Collections Agent, Inventory Tasking Agent, Supply Planning Agent, EPM Auto-Reforecasting, Strategic Risk Optimizer, Digital Factory Orchestrator, Auto Journal Entry, Intelligent Close Manager, and industry-specific autonomous agents (logistics, retail, pharma, smart city).
-Key classes: AutoJournalEntryService, AutoReforecastService, AutonomousLogisticsAgent, AutonomousRetailAgent, BusinessResourceOptimizer, CollectionsAgent, DigitalFactoryOrchestrator, FactoryController, FactoryProcessIntelligenceService, IndustryAutonomyController, IntelligentCloseManager, InventoryTaskingAgent, ManufacturingOeeCalculator, PharmaSupplyChainAgent, SmartCityOrchestrator, StrategicRiskOptimizer, SupplyPlanningAgent, VarianceAnalysisAgent
-________________________________________
-AI / Agent Orchestration (com.bharaterp.ai) — 17 files
-AI Agent Hub, MCP (Model Context Protocol) Tool Registry, Multi-Agent Orchestration, and a RAG (Retrieval-Augmented Generation) Pipeline.
-Key classes: AgentConsensusBalancer, AgentGovernanceService, AgentHubController, AgentRegistry, AgentRegistryRepository, AiHubExtensionController, GoogleSearchIntegration, KnowledgeDocument, KnowledgeDocumentRepository, McpServerService, McpToolRegistry, McpToolRegistryRepository, MultiAgentOrchestratorService, OrchestrationWorkflow, OrchestrationWorkflowRepository, RagPipelineService, SpringAiClaudeRouter
-________________________________________
-Platform Services (com.bharaterp.platform) — 17 files
-Multi-Tenant Schema Routing, Dynamic Schema Extension, Data Archiving/Purging, and Business Intelligence services.
-Key classes: CustomFieldMeta, CustomFieldMetaRepository, DataPurgeLog, DataPurgeLogRepository, DataPurgingStorageController, DataPurgingStorageService, DynamicSchemaExtensionController, DynamicSchemaExtensionEngine, MultiTenantSchemaController, MultiTenantSchemaRouter, ProcessIntelligenceService, SystemArchiveRegistry, SystemArchiveRegistryRepository, SystemDataArchiverController, SystemDataArchiverVolumeManager, TenantRoutingRegistry, TenantRoutingRegistryRepository
-________________________________________
-Integration & Connectors (com.bharaterp.integration) — 14 files
-Blockchain Audit, Generic Connectors, Tally Packet Parsing, Universal Data Import, and Webhook Dispatch.
-Key classes: BlockchainAuditService, BlockchainBlock, BlockchainBlockRepository, ConnectorConfig, ConnectorConfigRepository, ConnectorController, GenericConnectorService, TallyPacketParser, UniversalDataImporterService, UniversalImportController, WebhookController, WebhookDispatchService, WebhookSubscription, WebhookSubscriptionRepository
-________________________________________
-ESG & Sustainability (com.bharaterp.esg) — 13 files
-Carbon Footprint Tracking, Green Ledger, CSRD Compliance, and ESG Reporting — both a core esg.carbon/esg.universal implementation and a esg.vision.green variant.
-Key classes: CSRDComplianceService, CarbonEsgController, CarbonFootprintTracker, CarbonGreenLedgerService, CarbonTaxOptimizer, EInvoicePeppolService, ESGReportingService, EsgComplianceController, EsgVisionGreenLedgerService, GlobalESGEngine, SAPGreenLedgerAdapter, UniversalCarbonTaxOptimizer, UniversalEsgController
-________________________________________
-Agentic Mesh (com.bharaterp.agentic) — 11 files
-Agentic Mesh Coordination (AI Mesh Coordinator, Headless API Gateway), Process Intelligence, and Knowledge Graph Services.
-Key classes: AIMeshCoordinator, AgentOrchestrationEngine, AgenticController, AgenticOrchestrator, HeadlessApiGateway, JouleWorkWorkspace, KnowledgeGraphService, MeshSessionRegistry, MeshSessionRegistryRepository, ProcessIntelligenceService, RAPTService
-________________________________________
-Logistics (com.bharaterp.logistics) — 10 files
-Freight Billing, Route Optimization, Customs Clearance, VAHAN Integration, and Multimodal Shipment Tracking.
-Key classes: ConsignmentShipment, CustomsShipment, CustomsShipmentRepository, FreightConsignment, FreightConsignmentRepository, GlobalCustomsClearanceService, LogisticsController, NationalLogisticsVahanService, Vehicle, VehicleRepository
-________________________________________
-Quantum (R&D / Experimental) (com.bharaterp.quantum) — 9 files
-R&D/experimental cryptography and optimization: Quantum-Safe Crypto Engine, BB84 Quantum Key Distribution, Post-Quantum Crypto Service, and Simulated Annealing Optimizer.
-Key classes: BB84KeyDistributionService, PostQuantumCryptoService, QuantumComputationLog, QuantumComputationLogRepository, QuantumController, QuantumKeyDistribution, QuantumOptimizationEngine, QuantumSafeCryptoEngine, SimulatedAnnealingOptimizer
-________________________________________
-Manufacturing (com.bharaterp.manufacturing) — 8 files
-Shop-Floor Sequencing and Tooling Calibration Monitoring.
-Key classes: ShopFloorJob, ShopFloorJobRepository, ShopFloorSequencingController, ShopFloorSequencingEngine, ToolingCalibrationLog, ToolingCalibrationLogRepository, ToolingCalibrationMonitorController, ToolingCalibrationMonitorService
-________________________________________
-Marketplace (com.bharaterp.marketplace) — 7 files
-Partner Agent Registry, Agent Metering & Billing, and Marketplace Listings.
-Key classes: AgentBillingService, AgentMeteringBillingService, AgentSmartContract, AgentVendorRegistry, MarketplaceController, MarketplaceListingService, PartnerAgent
-________________________________________
-Blockchain (com.bharaterp.blockchain) — 6 files
-Supply-Chain Ledger, Pharma Traceability Bridge, and Smart Contract Engine.
-Key classes: AntiCounterfeitPharmaEngine, BlockchainLedgerService, IoTBlockchainBridge, PharmaSupplyChainService, RealTimeTraceabilityBridge, SmartContractEngine
-________________________________________
-Accounting (Ledger Core) (com.bharaterp.account) — 5 files
-The foundational Ledger/Accounting core — voucher entry, dual-posting journal lines, and the base ledger persistence layer that the Ledger UI module talks to directly.
-Key classes: Voucher, VoucherController, VoucherLine, VoucherRepository, VoucherService
-________________________________________
-Composable Architecture (com.bharaterp.composable) — 5 files
-Key classes: ApiGatewayService, CleanCoreValidator, DynamicPluginExtensionEngine, EventMeshService, ExtensionRegistry
-________________________________________
-Procurement (com.bharaterp.procurement) — 5 files
-Key classes: PurchaseOrder, PurchaseOrderApiController, PurchaseOrderRepository, VendorAssessmentService, VendorScorecardService
-________________________________________
-Banking (UPI) (com.bharaterp.banking) — 4 files
-Key classes: UpiPaymentController, UpiPaymentService, UpiTransaction, UpiTransactionRepository
-________________________________________
-Financial AI (CFO Agent) (com.bharaterp.financial) — 4 files
-Key classes: CfoAgentController, CfoAgentProfile, CfoAgentProfileRepository, CfoAgentService
-________________________________________
-Cognitive Digital Twin (com.bharaterp.cognitive) — 3 files
-Key classes: ContinuousPlanningService, EnterpriseDigitalTwin, ScenarioSimulationEngine
-________________________________________
-Decision Intelligence (com.bharaterp.decision) — 3 files
-Key classes: ContinuousForecastingEngine, InvisibleCognitivePlatform, WhatIfSimulationModel
-________________________________________
-Migration (Strangler Pattern) (com.bharaterp.migration) — 3 files
-Key classes: MicroservicesGateway, MigrationController, MonolithicDecoupler
-________________________________________
-Sovereign Cloud / GDPR (com.bharaterp.sovereign) — 3 files
-Key classes: DataResidencyService, GDPRComplianceService, LocalizationEngine
-________________________________________
-Universal Billing (com.bharaterp.universal) — 3 files
-Key classes: UniversalBillingApiController, UniversalInvoice, UniversalInvoiceRepository
-________________________________________
-Deployment Tools (com.bharaterp.deployment) — 2 files
-Key classes: GlobalEndpointSmokeTester, MicroserviceDecouplerRegistry
-________________________________________
-Global / IPO Compliance (com.bharaterp.global) — 2 files
-Key classes: InvestorReportingService, IpoComplianceService
-________________________________________
-Government API Integration (com.bharaterp.govt) — 2 files
-Key classes: GovtApiController, GovtApiService
-________________________________________
-Reporting & Dashboards (com.bharaterp.reporting) — 2 files
-Key classes: DashboardController, DashboardService
-________________________________________
-Spatial / AR-VR (com.bharaterp.spatial) — 2 files
-Key classes: ArVrIntegrationService, SpatialWorkspace
-________________________________________
-Digital Workforce (com.bharaterp.workforce) — 2 files
-Key classes: LearningExperienceManager, SkillsGapAnalyzer
-________________________________________
-Decision Intelligence (Scenario Modeling) (com.bharaterp.decisionintelligence) — 1 files
-Key classes: ScenarioModelingService
-________________________________________
-Cognitive Mesh (Overlord) (com.bharaterp.overlord) — 1 files
-Key classes: OmnipresentCognitiveMesh
-________________________________________
-Secretarial Compliance (com.bharaterp.secretarial) — 1 files
-Key classes: BoardMeetingService
-________________________________________
-XBRL Filing (com.bharaterp.xbrl) — 1 files
-Key classes: XbrlTaxonomyMappingService
-________________________________________
-Advanced Cockpits
-BHARAT ERP includes a dedicated Advanced Cockpits navigation dropdown — specialized dashboards layered on top of the four core modules, giving finance, compliance, and operations teams deep, domain-specific tooling without leaving the platform.
-Finance & Tax
-Cockpit	Purpose
-Executive Warroom Cockpit	Consolidated executive-level overview dashboard
-Global Forex Consolidation	Multi-currency treasury consolidation
-Asset Depreciation Calculator	Automated fixed-asset depreciation scheduling
-Cost-Center Budget Interceptor Lock	Budget overrun prevention at cost-center level
-Trade Finance Letter of Credit Gateway	LC issuance and trade finance workflow tracking
-Strategic Advance Tax Simulator	Advance tax liability projection
-Auto Bank Statement Reconciliation	Automated bank-to-ledger matching
-What-If Market Variance Stress Simulator	Scenario modeling for market shocks
-Compliance & Regulatory
-Cockpit	Purpose
-MCA Regulatory XBRL Filing Exporter	XBRL-format filing generation for MCA
-Immutable Secretarial Audit Log	Tamper-evident secretarial record keeping
-Statutory Gratuity EPFO Vault	Gratuity and EPFO compliance tracking
-Environment Safety Incident Analytics	EHS incident logging and analytics
-RERA Compliance & Escrow Drawdown	Real-estate escrow account compliance
-Expat Cross-Border Shadow Payroll	Cross-border employee shadow payroll tracking
-Risk & Forensics
-Cockpit	Purpose
-AML Suspicious Activity Forensic Radar	Anti-money-laundering pattern detection
-Anonymous Whistleblower Crypt-Vault	Encrypted, anonymous whistleblower reporting
-Autonomous Disbursement Recovery Agent	Automated recovery workflow for flagged disbursements
-DevSecOps Cyber SARIF Defect Exporter	Security defect export in SARIF format
-Operations & Supply Chain
-Cockpit	Purpose
-Realtime IoT Predictive Maintenance	Sensor-driven equipment maintenance forecasting
-3D Warehouse Visual Bin Mapping	Visual warehouse bin-location mapping
-Live Transit Cold Chain Tracker	Cold-chain logistics temperature/transit tracking
-Manufacturing Bill of Materials (BOM) MRP	Materials requirement planning from BOM
-Sourcing Partner Vendor Risk Radar	Vendor risk scoring for procurement
-GS1 Barcode RFID Serialization	Product serialization per GS1 standards
-Each cockpit is accessible directly from the top navigation bar's Advanced Cockpits dropdown, alongside the core Ledger, CRM, Payroll, and Audit modules.
-________________________________________
-Domain Package Reference
-Verified against a full recursive source scan — 833 total files across 45 domain packages.
-Domain Package	Files	% of Codebase
-com.bharaterp.hr (HR & Payroll)	114	13.7%
-com.bharaterp.industry (Industry Verticals)	102	12.2%
-com.bharaterp.finance (Finance)	96	11.5%
-com.bharaterp.crm (CRM)	52	6.2%
-com.bharaterp.compliance (Compliance)	46	5.5%
-com.bharaterp.supplychain (Supply Chain)	34	4.1%
-com.bharaterp.audit (Audit & Secretarial)	33	4.0%
-com.bharaterp.inventory (Inventory)	33	4.0%
-com.bharaterp.infrastructure (Infrastructure)	28	3.4%
-com.bharaterp.security (Security)	26	3.1%
-com.bharaterp.backend (Backend Core / Config)	25	3.0%
-com.bharaterp.core (Core Platform Utilities)	22	2.6%
-com.bharaterp.gst (GST & Tax)	19	2.3%
-com.bharaterp.sales (Sales)	19	2.3%
-com.bharaterp.autonomous (Autonomous Agents)	18	2.2%
-com.bharaterp.ai (AI / Agent Orchestration)	17	2.0%
-com.bharaterp.platform (Platform Services)	17	2.0%
-com.bharaterp.integration (Integration & Connectors)	14	1.7%
-com.bharaterp.esg (ESG & Sustainability)	13	1.6%
-com.bharaterp.agentic (Agentic Mesh)	11	1.3%
-com.bharaterp.logistics (Logistics)	10	1.2%
-com.bharaterp.quantum (Quantum (R&D / Experimental))	9	1.1%
-com.bharaterp.manufacturing (Manufacturing)	8	1.0%
-com.bharaterp.marketplace (Marketplace)	7	0.8%
-com.bharaterp.blockchain (Blockchain)	6	0.7%
-com.bharaterp.account (Accounting (Ledger Core))	5	0.6%
-com.bharaterp.composable (Composable Architecture)	5	0.6%
-com.bharaterp.procurement (Procurement)	5	0.6%
-com.bharaterp.banking (Banking (UPI))	4	0.5%
-com.bharaterp.financial (Financial AI (CFO Agent))	4	0.5%
-com.bharaterp.cognitive (Cognitive Digital Twin)	3	0.4%
-com.bharaterp.decision (Decision Intelligence)	3	0.4%
-com.bharaterp.migration (Migration (Strangler Pattern))	3	0.4%
-com.bharaterp.sovereign (Sovereign Cloud / GDPR)	3	0.4%
-com.bharaterp.universal (Universal Billing)	3	0.4%
-com.bharaterp.deployment (Deployment Tools)	2	0.2%
-com.bharaterp.global (Global / IPO Compliance)	2	0.2%
-com.bharaterp.govt (Government API Integration)	2	0.2%
-com.bharaterp.reporting (Reporting & Dashboards)	2	0.2%
-com.bharaterp.spatial (Spatial / AR-VR)	2	0.2%
-com.bharaterp.workforce (Digital Workforce)	2	0.2%
-com.bharaterp.decisionintelligence (Decision Intelligence (Scenario Modeling))	1	0.1%
-com.bharaterp.overlord (Cognitive Mesh (Overlord))	1	0.1%
-com.bharaterp.secretarial (Secretarial Compliance)	1	0.1%
-com.bharaterp.xbrl (XBRL Filing)	1	0.1%
-________________________________________
-Complete Backend File Index (All 833 Files)
-Every Java source file in the backend, grouped by domain package. Auto-generated from a full recursive scan of backend/src/main/java.
-HR & Payroll — com.bharaterp.hr (114 files)
+
+### HR & Payroll (`com.bharaterp.hr`) — 114 files
+
+The largest domain overall — **Employee lifecycle** (onboarding/offboarding), **Attendance & Leave**, **Payroll** (PF/ESI/PT/TDS, Full & Final Settlement, Gratuity, Bank Disbursement), **Performance & Appraisal cycles**, **Recruitment**, **Shift Scheduling**, **Compensation Benchmarking**, **Workforce Capacity Planning**, **Gig Worker Contracts**, **Expatriate Shadow Payroll**, and **Succession Planning**.
+
+**Key classes:** `ApplicantTrackingService`, `AppraisalCycle`, `AppraisalCycleRepository`, `AttendanceController`, `AttendanceRecord`, `AttendanceRepository`, `AttendanceService`, `BankDisbursementService`, `BenefitController`, `Candidate`, `CandidateRepository`, `CompanyHoliday`, `CompanyHolidayRepository`, `CompensationBenchmarkController`, `CompensationBenchmarkService`, `Employee`, `EmployeeBenefit`, `EmployeeBenefitRepository`, `EmployeeBenefitService`, `EmployeeController`, `EmployeeRepository`, `EmployeeService`, `EmployeeSkill`, `EmployeeSkillRepository`, `EngagementSurvey`, `EngagementSurveyController`, `EngagementSurveyRepository`, `EngagementSurveyService`, `ExpatriatePayrollController`, `ExpatriatePayrollNode`, `ExpatriatePayrollRepository`, `ExpatriateShadowPayrollEngine`, `ExpenseAuditVoucher`, `ExpenseAuditVoucherRepository`, `ExpenseClaim`, `ExpenseClaimRepository`, `ExpenseController`, `ExpenseOcrApiController`, `ExpenseOcrAuditController`, `ExpenseOcrAuditEngine`, `ExpenseOcrClaim`, `ExpenseOcrClaimRepository`, `ExpenseService`, `FnfService`, `GigContractorPayout`, `GigContractorPayoutRepository`, `GigWorkerContractController`, `GigWorkerContractLedger`, `GratuityService`, `HrAdminController`, `HrDocument`, `HrDocumentController`, `HrDocumentRepository`, `HrDocumentService`, `InterviewSchedulerService`, `JobRequisition`, `JobRequisitionRepository`, `LeaveBalance`, `LeaveBalanceRepository`, `LeaveBalanceService` ...and 52 more (see [full file index](#complete-backend-file-index-all-833-files))
+
+---
+
+### Industry Verticals (`com.bharaterp.industry`) — 102 files
+
+Vertical-specific modules covering **BFSI** (AML, KYC, loans), **Construction/RERA** (escrow, project costing), **Education** (admissions, LMS), **Healthcare/Pharma** (drug batches, prescriptions, Schedule H compliance), **Retail** (POS, loyalty), **Manufacturing** (BOM/MRP, predictive maintenance), **Agriculture** (traceability, mandi pricing), **Logistics**, **Professional Services**, **Public Sector**, and **Aviation**.
+
+**Key classes:** `AdmissionService`, `AdvancedWindsController`, `AgriBatch`, `AgriBatchRepository`, `AgriTraceabilityService`, `AgricultureController`, `AmlAlert`, `AmlAlertRepository`, `AmlMonitoringService`, `AmlTransaction`, `AmlTransactionRepository`, `Applicant`, `ApplicantRepository`, `AviationLogisticsService`, `BfsiController`, `BomEntry`, `BomEntryRepository`, `BudgetAllocation`, `BudgetExecutionService`, `CapitalMarketsService`, `CitizenProfile`, `CitizenProfileRepository`, `CitizenServicePortal`, `ClientPortalService`, `ConstructionMilestone`, `ConstructionMilestoneRepository`, `ConstructionProject`, `ConstructionProjectRepository`, `ConstructionProjectService`, `CoreBankingIntegration`, `CourseEnrollment`, `CourseEnrollmentRepository`, `CropBatch`, `CropBatchRepository`, `DrugBatch`, `DrugBatchRepository`, `DrugMaster`, `DrugMasterRepository`, `ECommercePlatformService`, `EducationController`, `Engagement`, `EngagementRepository`, `EnvironmentalTrackerService`, `FarmInventory`, `FeeStructure`, `FleetVehicle`, `FreightOrder`, `FreightOrderRepository`, `GrantApplication`, `GrantApplicationRepository`, `HealthcareController`, `InsuranceClaimsService`, `InventorySyncService`, `KycRecord`, `KycRecordRepository`, `KycVerificationService`, `LmsIntegrationService`, `LoanApplication`, `LoanApplicationRepository`, `LogisticsController` ...and 42 more (see [full file index](#complete-backend-file-index-all-833-files))
+
+---
+
+### Finance (`com.bharaterp.finance`) — 96 files
+
+The largest financial domain — covers **Accounts Payable/Receivable**, **Fixed Assets** (incl. depreciation & revaluation), **Bank Reconciliation & Cash Pooling**, **Budgeting**, **Cash Flow Forecasting**, **Consolidation**, **Credit Risk Scoring**, **Currency Triangulation**, **Hedge Accounting**, **Revenue Recognition (ASC 606)**, and **Transfer Pricing**.
+
+**Key classes:** `AccountsPayableController`, `AccountsPayableService`, `AccountsReceivableController`, `AccountsReceivableService`, `Asc606SubscriptionApiController`, `Asc606SubscriptionEngine`, `Asc606SubscriptionLedger`, `Asc606SubscriptionLedgerRepository`, `AssetFairValue`, `AssetFairValueController`, `AssetFairValueRepository`, `AssetFairValueService`, `AssetRevaluation`, `AssetRevaluationController`, `AssetRevaluationRepository`, `AssetRevaluationService`, `BankCashPool`, `BankCashPoolRepository`, `BankCashPoolingController`, `BankCashPoolingService`, `BankReconciliationController`, `BankReconciliationService`, `BankStatementMt940Parser`, `BankStatementParserController`, `BankStatementParserRepository`, `BankTransaction`, `BankTransactionRepository`, `BudgetController`, `BudgetLine`, `BudgetLineRepository`, `BudgetService`, `CashFlowForecastController`, `CashFlowForecastService`, `ConsolidationController`, `ConsolidationService`, `CreditRiskScoringController`, `CreditRiskScoringEngine`, `CurrencyTriangulation`, `CurrencyTriangulationController`, `CurrencyTriangulationRepository`, `CurrencyTriangulationService`, `Customer`, `CustomerController`, `CustomerCreditScore`, `CustomerCreditScoreRepository`, `CustomerInvoice`, `CustomerInvoiceRepository`, `CustomerRepository`, `DepreciationService`, `EquityDividend`, `EquityDividendController`, `EquityDividendRepository`, `EquityDividendService`, `ExportController`, `ExportService`, `FixedAsset`, `FixedAssetController`, `FixedAssetRepository`, `FixedAssetService`, `HedgeAccountingController` ...and 35 more (see [full file index](#complete-backend-file-index-all-833-files))
+
+---
+
+### CRM (`com.bharaterp.crm`) — 52 files
+
+Full B2B CRM: **Accounts & Contacts**, **Leads & Opportunities**, **Activities & Tasks**, **Assignment Rules** (incl. round-robin pooling), **Custom Fields**, **Deal Products**, **Marketing Campaigns**, and **Email Sequences**.
+
+**Key classes:** `Account`, `AccountContact`, `AccountContactRepository`, `AccountController`, `AccountRepository`, `AccountService`, `Activity`, `ActivityController`, `ActivityRepository`, `ActivityService`, `AssignmentRule`, `AssignmentRuleController`, `AssignmentRuleRepository`, `AssignmentRuleService`, `Campaign`, `CampaignController`, `CampaignRecipient`, `CampaignRecipientRepository`, `CampaignRepository`, `CampaignService`, `CustomFieldController`, `CustomFieldDefinition`, `CustomFieldDefinitionRepository`, `CustomFieldService`, `CustomFieldValue`, `CustomFieldValueRepository`, `EmailSequence`, `EmailSequenceController`, `EmailSequenceRepository`, `EmailSequenceService`, `Lead`, `LeadController`, `LeadRepository`, `LeadService`, `Opportunity`, `OpportunityController`, `OpportunityProduct`, `OpportunityProductController`, `OpportunityProductRepository`, `OpportunityProductService`, `OpportunityRepository`, `OpportunityService`, `RoundRobinPool`, `RoundRobinPoolRepository`, `SequenceEnrollment`, `SequenceEnrollmentRepository`, `SequenceStep`, `SequenceStepRepository`, `Task`, `TaskController`, `TaskRepository`, `TaskService`
+
+---
+
+### Compliance (`com.bharaterp.compliance`) — 46 files
+
+Statutory and regulatory compliance: **EHS Incidents**, **E-Invoice & E-Way Bill**, **DPDPA Consent Audit**, **GST**, **Legal Matter Tracking**, **MDM Golden Records**, **Data Migration**, and the **Whistleblower Vault**.
+
+**Key classes:** `ComplianceAgentService`, `ComplianceAsService`, `DPDPComplianceApiController`, `DPDPComplianceEngine`, `DpdpConsentAudit`, `DpdpConsentAuditRepository`, `EInvoiceComplianceController`, `EInvoiceExchangeService`, `EhsIncidentApiController`, `EhsIncidentMatrixEngine`, `EhsIncidentRecord`, `EhsIncidentRecordRepository`, `EhsIncidentRepository`, `EhsIncidentTrackingService`, `EnterpriseMigrationCockpitController`, `EnterpriseMigrationCockpitService`, `EwayBillApiController`, `EwayBillDetails`, `EwayBillRepository`, `GlobalComplianceController`, `GlobalTaxEngine`, `GstInvoiceSummary`, `GstReturnApiController`, `LegalMatter`, `LegalMatterController`, `LegalMatterRepository`, `LegalMatterTrackingService`, `MdmGoldenRecord`, `MdmGoldenRecordApiController`, `MdmGoldenRecordEngine`, `MdmGoldenRecordRepository`, `MigrationDataChunk`, `MigrationDataChunkRepository`, `MigrationJobRegistry`, `MigrationJobRegistryRepository`, `TaxAgentService`, `UniversalEInvoiceExchange`, `UniversalGlobalTaxEngine`, `WhistleblowerCase`, `WhistleblowerCaseRepository`, `WhistleblowerVaultController`, `WhistleblowerVaultService`
+
+---
+
+### Supply Chain (`com.bharaterp.supplychain`) — 34 files
+
+**Container/Load Optimization**, **Dropshipping Orchestration**, **GS1 Barcode Serialization**, **IoT Plant Telemetry**, **Vendor-Managed Inventory**, **Wave-Picking Optimization**, and **Distributed Order Routing (DOM)**.
+
+**Key classes:** `ContainerLoadJob`, `ContainerLoadJobRepository`, `ContainerLoadOptimizationController`, `ContainerLoadOptimizationService`, `DistributedOrderRoute`, `DistributedOrderRouteRepository`, `DistributedOrderRoutingController`, `DistributedOrderRoutingService`, `DropshipJob`, `DropshipJobRepository`, `DropshipOrchestrator`, `DropshipOrchestratorController`, `Gs1Barcode`, `Gs1BarcodeGeneratorController`, `Gs1BarcodeGeneratorService`, `Gs1BarcodeRepository`, `MandiTradeApiController`, `MandiTradeTicket`, `MandiTradeTicketRepository`, `PlantIotApiController`, `PlantIotTelemetry`, `PlantIotTelemetryRepository`, `SupplyChainGatewayController`, `SupplyChainShipment`, `SupplyChainShipmentRepository`, `VendorManagedInventoryController`, `VendorManagedInventoryEngine`, `VmiThresholdNode`, `VmiThresholdRepository`, `WavePickingJob`, `WavePickingJobRepository`, `WavePickingOptimizationController`, `WavePickingOptimizationService`
+
+---
+
+### Audit & Secretarial (`com.bharaterp.audit`) — 33 files
+
+Statutory audit and secretarial affairs: **Audit Engagements**, **Board Meetings**, **CARO Clause Compliance**, **ROC Filings**, **Secretarial Audit Reports**, and **XBRL Filing Generation**.
+
+**Key classes:** `AuditChecklistAutomationService`, `AuditChecklistItem`, `AuditChecklistItemRepository`, `AuditEngagement`, `AuditEngagementController`, `AuditEngagementRepository`, `AuditEngagementService`, `AuditSodEnforcer`, `BoardMeeting`, `BoardMeetingController`, `BoardMeetingRepository`, `CaroClauseResponse`, `CaroClauseResponseRepository`, `CaroComplianceGuardrail`, `CaroRuleEngine`, `ContinuousEvidenceCollector`, `McaFilingExporter`, `RocFiling`, `RocFilingController`, `RocFilingRepository`, `RocFilingService`, `SecretarialAuditReport`, `SecretarialAuditReportController`, `SecretarialAuditReportRepository`, `SecretarialComplianceController`, `SecretarialComplianceService`, `StatutoryRegisterService`, `UpgradedAuditController`, `XbrlFiling`, `XbrlFilingController`, `XbrlFilingRepository`, `XbrlGeneratorService`, `XbrlReportGenerator`
+
+---
+
+### Inventory (`com.bharaterp.inventory`) — 33 files
+
+**Products**, **Purchase Orders**, **Sales Orders**, **Warehouse & Stock Management**, **Customer Credit Limits**, and **Weight-Based (Catch-Weight) Stock** tracking.
+
+**Key classes:** `CatchWeightStock`, `CatchWeightStockRepository`, `CustomerCreditController`, `CustomerCreditLimit`, `CustomerCreditLimitRepository`, `CustomerCreditService`, `InventoryApiController`, `Product`, `ProductController`, `ProductRepository`, `ProductService`, `PurchaseOrder`, `PurchaseOrderController`, `PurchaseOrderItem`, `PurchaseOrderItemRepository`, `PurchaseOrderRepository`, `PurchaseOrderService`, `SalesOrder`, `SalesOrderController`, `SalesOrderItem`, `SalesOrderItemRepository`, `SalesOrderRepository`, `SalesOrderService`, `StockItem`, `StockItemRepository`, `VariableWeightStockController`, `VariableWeightStockEngine`, `Warehouse`, `WarehouseController`, `WarehouseRepository`, `WarehouseService`, `WarehouseStock`, `WarehouseStockRepository`
+
+---
+
+### Infrastructure (`com.bharaterp.infrastructure`) — 28 files
+
+Distributed systems infrastructure: **DB Grid** (sharding, replication, failover, write-ahead logging, deadlock prevention), **IoT Edge** (device auth, MQTT/OPC-UA bridges, telemetry processing), and **AI Governance Training**.
+
+**Key classes:** `AiImplementationTrainingService`, `ClusterConfigurationRegistry`, `ClusterHeartbeatMonitor`, `ClusterReplicationAuditor`, `DataConsistencyBroker`, `DataPurgingArchiver`, `DataSlicingReconciler`, `DeadlockPreventionEngine`, `DeviceFirmwareValidator`, `DistributedPartitionManager`, `DistributedShardingRouter`, `DistributedSnapshotEngine`, `DynamicQueryOptimizer`, `EdgeDataBufferCache`, `EdgeTelemetryProcessor`, `FailoverClusterManager`, `HardwareDeviceAuthenticator`, `HardwareEdgeReconciler`, `IndustryPlclinkingService`, `IngressDataSpikeMitigator`, `IoTHeartbeatMonitor`, `MqttBrokerConnector`, `OpcUaProtocolBridge`, `QueryRoutingLoadBalancer`, `RfidBatchIngestionEngine`, `TelemetryAnomalyFilter`, `WriteAheadLogEngine`, `WriteBufferFlushEngine`
+
+---
+
+### Security (`com.bharaterp.security`) — 26 files
+
+**RBAC** (roles & permissions), **SSO**, **Activity Audit Logging**, **API Token Bucket Shielding** (rate limiting), **Zero-Trust Threat Detection**, and **ZKP (Zero-Knowledge Proof) Audit Attestation**.
+
+**Key classes:** `AIThreatDetection`, `ActivityLog`, `ActivityLogController`, `ActivityLogRepository`, `ActivityLogService`, `ApiShieldPolicy`, `ApiShieldPolicyRepository`, `ApiTokenBucketShield`, `ApiTokenBucketShieldController`, `AuditLogAspect`, `Permission`, `PermissionRepository`, `RbacController`, `RbacService`, `RolePermission`, `RolePermissionRepository`, `SecurityIntegrityGuard`, `SharedSsoCoreController`, `SharedSsoCoreService`, `SsoSessionToken`, `SsoSessionTokenRepository`, `ZeroTrustEnforcer`, `ZkpAuditAttestation`, `ZkpAuditAttestationController`, `ZkpAuditAttestationRepository`, `ZkpAuditAttestationService`
+
+---
+
+### Backend Core / Config (`com.bharaterp.backend`) — 25 files
+
+Core application bootstrap and configuration: **JWT Auth**, **Kafka**, **RabbitMQ**, **Redis**, **Swagger/OpenAPI**, plus the `AuthController`/`AuthService` and core `User` entity.
+
+**Key classes:** `AiCopilotController`, `AiCopilotService`, `AuthController`, `AuthService`, `BackendApplication`, `CustomsClearanceService`, `DataMaskingService`, `FreightBillingService`, `GlobalizationService`, `IoTEventController`, `IoTEventService`, `JwtAuthenticationFilter`, `JwtTokenProvider`, `KafkaConfig`, `OpenApiMetadataConfig`, `RabbitMqConfig`, `RedisConfig`, `RouteOptimizationService`, `SecurityConfig`, `SwaggerConfig`, `User`, `UserDetailsServiceImpl`, `UserRepository`, `VahanIntegrationService`, `ZeroTrustMaskingService`
+
+---
+
+### Core Platform Utilities (`com.bharaterp.core`) — 22 files
+
+Cross-cutting platform concerns: **Audit Trail Interceptor**, **Hybrid Cache Sync**, **Feature Flag Management**, **Org Role Hierarchy**, and **Distributed Transaction Coordination**.
+
+**Key classes:** `AuditTrailInterceptor`, `CacheSyncQueue`, `CacheSyncQueueRepository`, `DistributedTransactionRegistry`, `DistributedTransactionRegistryRepository`, `DistributedTxCoordinatorController`, `DistributedTxCoordinatorEngine`, `FeatureFlagManagementController`, `FeatureFlagManagementService`, `FeatureFlagRegistry`, `FeatureFlagRegistryRepository`, `HybridCacheSyncController`, `HybridCacheSyncService`, `OrgRoleHierarchyController`, `OrgRoleHierarchyService`, `OrgRoleNode`, `OrgRoleNodeRepository`, `SecurityAuditBlock`, `SecurityAuditBlockRepository`, `SecurityAuditController`, `TransactionParticipantNode`, `TransactionParticipantNodeRepository`
+
+---
+
+### GST & Tax (`com.bharaterp.gst`) — 19 files
+
+**GST Invoicing**, **GSTR Filing**, **HSN Mapping**, and **E-Way Bill** generation.
+
+**Key classes:** `EWayBill`, `EWayBillController`, `EWayBillRepository`, `EWayBillService`, `GstCalculationService`, `GstInvoice`, `GstInvoiceController`, `GstInvoiceItem`, `GstInvoiceItemRepository`, `GstInvoiceRepository`, `GstInvoiceService`, `GstrFilingController`, `GstrFilingRecord`, `GstrFilingRecordRepository`, `GstrFilingService`, `HsnMappingController`, `HsnMappingService`, `HsnMaster`, `HsnMasterRepository`
+
+---
+
+### Sales (`com.bharaterp.sales`) — 19 files
+
+**Sales Invoicing**, **CPQ (Configure-Price-Quote) Engine**, **Partner Rebate Ledger**, and **Tiered Volume Pricing**.
+
+**Key classes:** `CpqEngineController`, `CpqEngineService`, `CpqQuote`, `CpqQuoteRepository`, `PartnerRebateLedger`, `PartnerRebateLedgerController`, `PartnerRebateLedgerRepository`, `PartnerRebateLedgerService`, `PricingTier`, `PricingTierRepository`, `RebateSlab`, `RebateSlabRepository`, `SalesInvoice`, `SalesInvoiceApiController`, `SalesInvoiceRepository`, `TieredVolumePricing`, `TieredVolumePricingController`, `TieredVolumePricingEngineService`, `TieredVolumePricingRepository`
+
+---
+
+### Autonomous Agents (`com.bharaterp.autonomous`) — 18 files
+
+Autonomous, agent-driven automation: **Collections Agent**, **Inventory Tasking Agent**, **Supply Planning Agent**, **EPM Auto-Reforecasting**, **Strategic Risk Optimizer**, **Digital Factory Orchestrator**, **Auto Journal Entry**, **Intelligent Close Manager**, and industry-specific autonomous agents (logistics, retail, pharma, smart city).
+
+**Key classes:** `AutoJournalEntryService`, `AutoReforecastService`, `AutonomousLogisticsAgent`, `AutonomousRetailAgent`, `BusinessResourceOptimizer`, `CollectionsAgent`, `DigitalFactoryOrchestrator`, `FactoryController`, `FactoryProcessIntelligenceService`, `IndustryAutonomyController`, `IntelligentCloseManager`, `InventoryTaskingAgent`, `ManufacturingOeeCalculator`, `PharmaSupplyChainAgent`, `SmartCityOrchestrator`, `StrategicRiskOptimizer`, `SupplyPlanningAgent`, `VarianceAnalysisAgent`
+
+---
+
+### AI / Agent Orchestration (`com.bharaterp.ai`) — 17 files
+
+**AI Agent Hub**, **MCP (Model Context Protocol) Tool Registry**, **Multi-Agent Orchestration**, and a **RAG (Retrieval-Augmented Generation) Pipeline**.
+
+**Key classes:** `AgentConsensusBalancer`, `AgentGovernanceService`, `AgentHubController`, `AgentRegistry`, `AgentRegistryRepository`, `AiHubExtensionController`, `GoogleSearchIntegration`, `KnowledgeDocument`, `KnowledgeDocumentRepository`, `McpServerService`, `McpToolRegistry`, `McpToolRegistryRepository`, `MultiAgentOrchestratorService`, `OrchestrationWorkflow`, `OrchestrationWorkflowRepository`, `RagPipelineService`, `SpringAiClaudeRouter`
+
+---
+
+### Platform Services (`com.bharaterp.platform`) — 17 files
+
+**Multi-Tenant Schema Routing**, **Dynamic Schema Extension**, **Data Archiving/Purging**, and **Business Intelligence** services.
+
+**Key classes:** `CustomFieldMeta`, `CustomFieldMetaRepository`, `DataPurgeLog`, `DataPurgeLogRepository`, `DataPurgingStorageController`, `DataPurgingStorageService`, `DynamicSchemaExtensionController`, `DynamicSchemaExtensionEngine`, `MultiTenantSchemaController`, `MultiTenantSchemaRouter`, `ProcessIntelligenceService`, `SystemArchiveRegistry`, `SystemArchiveRegistryRepository`, `SystemDataArchiverController`, `SystemDataArchiverVolumeManager`, `TenantRoutingRegistry`, `TenantRoutingRegistryRepository`
+
+---
+
+### Integration & Connectors (`com.bharaterp.integration`) — 14 files
+
+**Blockchain Audit**, **Generic Connectors**, **Tally Packet Parsing**, **Universal Data Import**, and **Webhook Dispatch**.
+
+**Key classes:** `BlockchainAuditService`, `BlockchainBlock`, `BlockchainBlockRepository`, `ConnectorConfig`, `ConnectorConfigRepository`, `ConnectorController`, `GenericConnectorService`, `TallyPacketParser`, `UniversalDataImporterService`, `UniversalImportController`, `WebhookController`, `WebhookDispatchService`, `WebhookSubscription`, `WebhookSubscriptionRepository`
+
+---
+
+### ESG & Sustainability (`com.bharaterp.esg`) — 13 files
+
+**Carbon Footprint Tracking**, **Green Ledger**, **CSRD Compliance**, and **ESG Reporting** — both a core `esg.carbon`/`esg.universal` implementation and a `esg.vision.green` variant.
+
+**Key classes:** `CSRDComplianceService`, `CarbonEsgController`, `CarbonFootprintTracker`, `CarbonGreenLedgerService`, `CarbonTaxOptimizer`, `EInvoicePeppolService`, `ESGReportingService`, `EsgComplianceController`, `EsgVisionGreenLedgerService`, `GlobalESGEngine`, `SAPGreenLedgerAdapter`, `UniversalCarbonTaxOptimizer`, `UniversalEsgController`
+
+---
+
+### Agentic Mesh (`com.bharaterp.agentic`) — 11 files
+
+**Agentic Mesh Coordination** (AI Mesh Coordinator, Headless API Gateway), **Process Intelligence**, and **Knowledge Graph Services**.
+
+**Key classes:** `AIMeshCoordinator`, `AgentOrchestrationEngine`, `AgenticController`, `AgenticOrchestrator`, `HeadlessApiGateway`, `JouleWorkWorkspace`, `KnowledgeGraphService`, `MeshSessionRegistry`, `MeshSessionRegistryRepository`, `ProcessIntelligenceService`, `RAPTService`
+
+---
+
+### Logistics (`com.bharaterp.logistics`) — 10 files
+
+**Freight Billing**, **Route Optimization**, **Customs Clearance**, **VAHAN Integration**, and **Multimodal Shipment Tracking**.
+
+**Key classes:** `ConsignmentShipment`, `CustomsShipment`, `CustomsShipmentRepository`, `FreightConsignment`, `FreightConsignmentRepository`, `GlobalCustomsClearanceService`, `LogisticsController`, `NationalLogisticsVahanService`, `Vehicle`, `VehicleRepository`
+
+---
+
+### Quantum (R&D / Experimental) (`com.bharaterp.quantum`) — 9 files
+
+R&D/experimental cryptography and optimization: **Quantum-Safe Crypto Engine**, **BB84 Quantum Key Distribution**, **Post-Quantum Crypto Service**, and **Simulated Annealing Optimizer**.
+
+**Key classes:** `BB84KeyDistributionService`, `PostQuantumCryptoService`, `QuantumComputationLog`, `QuantumComputationLogRepository`, `QuantumController`, `QuantumKeyDistribution`, `QuantumOptimizationEngine`, `QuantumSafeCryptoEngine`, `SimulatedAnnealingOptimizer`
+
+---
+
+### Manufacturing (`com.bharaterp.manufacturing`) — 8 files
+
+**Shop-Floor Sequencing** and **Tooling Calibration Monitoring**.
+
+**Key classes:** `ShopFloorJob`, `ShopFloorJobRepository`, `ShopFloorSequencingController`, `ShopFloorSequencingEngine`, `ToolingCalibrationLog`, `ToolingCalibrationLogRepository`, `ToolingCalibrationMonitorController`, `ToolingCalibrationMonitorService`
+
+---
+
+### Marketplace (`com.bharaterp.marketplace`) — 7 files
+
+**Partner Agent Registry**, **Agent Metering & Billing**, and **Marketplace Listings**.
+
+**Key classes:** `AgentBillingService`, `AgentMeteringBillingService`, `AgentSmartContract`, `AgentVendorRegistry`, `MarketplaceController`, `MarketplaceListingService`, `PartnerAgent`
+
+---
+
+### Blockchain (`com.bharaterp.blockchain`) — 6 files
+
+**Supply-Chain Ledger**, **Pharma Traceability Bridge**, and **Smart Contract Engine**.
+
+**Key classes:** `AntiCounterfeitPharmaEngine`, `BlockchainLedgerService`, `IoTBlockchainBridge`, `PharmaSupplyChainService`, `RealTimeTraceabilityBridge`, `SmartContractEngine`
+
+---
+
+### Accounting (Ledger Core) (`com.bharaterp.account`) — 5 files
+
+The foundational **Ledger/Accounting core** — voucher entry, dual-posting journal lines, and the base ledger persistence layer that the Ledger UI module talks to directly.
+
+**Key classes:** `Voucher`, `VoucherController`, `VoucherLine`, `VoucherRepository`, `VoucherService`
+
+---
+
+### Composable Architecture (`com.bharaterp.composable`) — 5 files
+
+**Key classes:** `ApiGatewayService`, `CleanCoreValidator`, `DynamicPluginExtensionEngine`, `EventMeshService`, `ExtensionRegistry`
+
+---
+
+### Procurement (`com.bharaterp.procurement`) — 5 files
+
+**Key classes:** `PurchaseOrder`, `PurchaseOrderApiController`, `PurchaseOrderRepository`, `VendorAssessmentService`, `VendorScorecardService`
+
+---
+
+### Banking (UPI) (`com.bharaterp.banking`) — 4 files
+
+**Key classes:** `UpiPaymentController`, `UpiPaymentService`, `UpiTransaction`, `UpiTransactionRepository`
+
+---
+
+### Financial AI (CFO Agent) (`com.bharaterp.financial`) — 4 files
+
+**Key classes:** `CfoAgentController`, `CfoAgentProfile`, `CfoAgentProfileRepository`, `CfoAgentService`
+
+---
+
+### Cognitive Digital Twin (`com.bharaterp.cognitive`) — 3 files
+
+**Key classes:** `ContinuousPlanningService`, `EnterpriseDigitalTwin`, `ScenarioSimulationEngine`
+
+---
+
+### Decision Intelligence (`com.bharaterp.decision`) — 3 files
+
+**Key classes:** `ContinuousForecastingEngine`, `InvisibleCognitivePlatform`, `WhatIfSimulationModel`
+
+---
+
+### Migration (Strangler Pattern) (`com.bharaterp.migration`) — 3 files
+
+**Key classes:** `MicroservicesGateway`, `MigrationController`, `MonolithicDecoupler`
+
+---
+
+### Sovereign Cloud / GDPR (`com.bharaterp.sovereign`) — 3 files
+
+**Key classes:** `DataResidencyService`, `GDPRComplianceService`, `LocalizationEngine`
+
+---
+
+### Universal Billing (`com.bharaterp.universal`) — 3 files
+
+**Key classes:** `UniversalBillingApiController`, `UniversalInvoice`, `UniversalInvoiceRepository`
+
+---
+
+### Deployment Tools (`com.bharaterp.deployment`) — 2 files
+
+**Key classes:** `GlobalEndpointSmokeTester`, `MicroserviceDecouplerRegistry`
+
+---
+
+### Global / IPO Compliance (`com.bharaterp.global`) — 2 files
+
+**Key classes:** `InvestorReportingService`, `IpoComplianceService`
+
+---
+
+### Government API Integration (`com.bharaterp.govt`) — 2 files
+
+**Key classes:** `GovtApiController`, `GovtApiService`
+
+---
+
+### Reporting & Dashboards (`com.bharaterp.reporting`) — 2 files
+
+**Key classes:** `DashboardController`, `DashboardService`
+
+---
+
+### Spatial / AR-VR (`com.bharaterp.spatial`) — 2 files
+
+**Key classes:** `ArVrIntegrationService`, `SpatialWorkspace`
+
+---
+
+### Digital Workforce (`com.bharaterp.workforce`) — 2 files
+
+**Key classes:** `LearningExperienceManager`, `SkillsGapAnalyzer`
+
+---
+
+### Decision Intelligence (Scenario Modeling) (`com.bharaterp.decisionintelligence`) — 1 files
+
+**Key classes:** `ScenarioModelingService`
+
+---
+
+### Cognitive Mesh (Overlord) (`com.bharaterp.overlord`) — 1 files
+
+**Key classes:** `OmnipresentCognitiveMesh`
+
+---
+
+### Secretarial Compliance (`com.bharaterp.secretarial`) — 1 files
+
+**Key classes:** `BoardMeetingService`
+
+---
+
+### XBRL Filing (`com.bharaterp.xbrl`) — 1 files
+
+**Key classes:** `XbrlTaxonomyMappingService`
+
+---
+
+## Advanced Cockpits
+
+BHARAT ERP includes a dedicated **Advanced Cockpits** navigation dropdown — specialized dashboards layered on top of the four core modules, giving finance, compliance, and operations teams deep, domain-specific tooling without leaving the platform.
+
+### Finance & Tax
+| Cockpit | Purpose |
+|---|---|
+| Executive Warroom Cockpit | Consolidated executive-level overview dashboard |
+| Global Forex Consolidation | Multi-currency treasury consolidation |
+| Asset Depreciation Calculator | Automated fixed-asset depreciation scheduling |
+| Cost-Center Budget Interceptor Lock | Budget overrun prevention at cost-center level |
+| Trade Finance Letter of Credit Gateway | LC issuance and trade finance workflow tracking |
+| Strategic Advance Tax Simulator | Advance tax liability projection |
+| Auto Bank Statement Reconciliation | Automated bank-to-ledger matching |
+| What-If Market Variance Stress Simulator | Scenario modeling for market shocks |
+
+### Compliance & Regulatory
+| Cockpit | Purpose |
+|---|---|
+| MCA Regulatory XBRL Filing Exporter | XBRL-format filing generation for MCA |
+| Immutable Secretarial Audit Log | Tamper-evident secretarial record keeping |
+| Statutory Gratuity EPFO Vault | Gratuity and EPFO compliance tracking |
+| Environment Safety Incident Analytics | EHS incident logging and analytics |
+| RERA Compliance & Escrow Drawdown | Real-estate escrow account compliance |
+| Expat Cross-Border Shadow Payroll | Cross-border employee shadow payroll tracking |
+
+### Risk & Forensics
+| Cockpit | Purpose |
+|---|---|
+| AML Suspicious Activity Forensic Radar | Anti-money-laundering pattern detection |
+| Anonymous Whistleblower Crypt-Vault | Encrypted, anonymous whistleblower reporting |
+| Autonomous Disbursement Recovery Agent | Automated recovery workflow for flagged disbursements |
+| DevSecOps Cyber SARIF Defect Exporter | Security defect export in SARIF format |
+
+### Operations & Supply Chain
+| Cockpit | Purpose |
+|---|---|
+| Realtime IoT Predictive Maintenance | Sensor-driven equipment maintenance forecasting |
+| 3D Warehouse Visual Bin Mapping | Visual warehouse bin-location mapping |
+| Live Transit Cold Chain Tracker | Cold-chain logistics temperature/transit tracking |
+| Manufacturing Bill of Materials (BOM) MRP | Materials requirement planning from BOM |
+| Sourcing Partner Vendor Risk Radar | Vendor risk scoring for procurement |
+| GS1 Barcode RFID Serialization | Product serialization per GS1 standards |
+
+Each cockpit is accessible directly from the top navigation bar's **Advanced Cockpits** dropdown, alongside the core Ledger, CRM, Payroll, and Audit modules.
+
+---
+
+## Domain Package Reference
+
+Verified against a full recursive source scan — **833 total files** across **45 domain packages**.
+
+| Domain Package | Files | % of Codebase |
+|---|---|---|
+| `com.bharaterp.hr` (HR & Payroll) | 114 | 13.7% |
+| `com.bharaterp.industry` (Industry Verticals) | 102 | 12.2% |
+| `com.bharaterp.finance` (Finance) | 96 | 11.5% |
+| `com.bharaterp.crm` (CRM) | 52 | 6.2% |
+| `com.bharaterp.compliance` (Compliance) | 46 | 5.5% |
+| `com.bharaterp.supplychain` (Supply Chain) | 34 | 4.1% |
+| `com.bharaterp.audit` (Audit & Secretarial) | 33 | 4.0% |
+| `com.bharaterp.inventory` (Inventory) | 33 | 4.0% |
+| `com.bharaterp.infrastructure` (Infrastructure) | 28 | 3.4% |
+| `com.bharaterp.security` (Security) | 26 | 3.1% |
+| `com.bharaterp.backend` (Backend Core / Config) | 25 | 3.0% |
+| `com.bharaterp.core` (Core Platform Utilities) | 22 | 2.6% |
+| `com.bharaterp.gst` (GST & Tax) | 19 | 2.3% |
+| `com.bharaterp.sales` (Sales) | 19 | 2.3% |
+| `com.bharaterp.autonomous` (Autonomous Agents) | 18 | 2.2% |
+| `com.bharaterp.ai` (AI / Agent Orchestration) | 17 | 2.0% |
+| `com.bharaterp.platform` (Platform Services) | 17 | 2.0% |
+| `com.bharaterp.integration` (Integration & Connectors) | 14 | 1.7% |
+| `com.bharaterp.esg` (ESG & Sustainability) | 13 | 1.6% |
+| `com.bharaterp.agentic` (Agentic Mesh) | 11 | 1.3% |
+| `com.bharaterp.logistics` (Logistics) | 10 | 1.2% |
+| `com.bharaterp.quantum` (Quantum (R&D / Experimental)) | 9 | 1.1% |
+| `com.bharaterp.manufacturing` (Manufacturing) | 8 | 1.0% |
+| `com.bharaterp.marketplace` (Marketplace) | 7 | 0.8% |
+| `com.bharaterp.blockchain` (Blockchain) | 6 | 0.7% |
+| `com.bharaterp.account` (Accounting (Ledger Core)) | 5 | 0.6% |
+| `com.bharaterp.composable` (Composable Architecture) | 5 | 0.6% |
+| `com.bharaterp.procurement` (Procurement) | 5 | 0.6% |
+| `com.bharaterp.banking` (Banking (UPI)) | 4 | 0.5% |
+| `com.bharaterp.financial` (Financial AI (CFO Agent)) | 4 | 0.5% |
+| `com.bharaterp.cognitive` (Cognitive Digital Twin) | 3 | 0.4% |
+| `com.bharaterp.decision` (Decision Intelligence) | 3 | 0.4% |
+| `com.bharaterp.migration` (Migration (Strangler Pattern)) | 3 | 0.4% |
+| `com.bharaterp.sovereign` (Sovereign Cloud / GDPR) | 3 | 0.4% |
+| `com.bharaterp.universal` (Universal Billing) | 3 | 0.4% |
+| `com.bharaterp.deployment` (Deployment Tools) | 2 | 0.2% |
+| `com.bharaterp.global` (Global / IPO Compliance) | 2 | 0.2% |
+| `com.bharaterp.govt` (Government API Integration) | 2 | 0.2% |
+| `com.bharaterp.reporting` (Reporting & Dashboards) | 2 | 0.2% |
+| `com.bharaterp.spatial` (Spatial / AR-VR) | 2 | 0.2% |
+| `com.bharaterp.workforce` (Digital Workforce) | 2 | 0.2% |
+| `com.bharaterp.decisionintelligence` (Decision Intelligence (Scenario Modeling)) | 1 | 0.1% |
+| `com.bharaterp.overlord` (Cognitive Mesh (Overlord)) | 1 | 0.1% |
+| `com.bharaterp.secretarial` (Secretarial Compliance) | 1 | 0.1% |
+| `com.bharaterp.xbrl` (XBRL Filing) | 1 | 0.1% |
+
+---
+
+## Complete Backend File Index (All 833 Files)
+
+Every Java source file in the backend, grouped by domain package. Auto-generated from a full recursive scan of `backend/src/main/java`.
+
+### HR & Payroll — `com.bharaterp.hr` (114 files)
+
+```
 com/bharaterp/hr/controller/EmployeeController.java
 com/bharaterp/hr/controller/attendance/AttendanceController.java
 com/bharaterp/hr/controller/compensation/CompensationBenchmarkController.java
@@ -497,7 +730,11 @@ com/bharaterp/hr/workforce/gig/controller/GigWorkerContractController.java
 com/bharaterp/hr/workforce/gig/entity/GigContractorPayout.java
 com/bharaterp/hr/workforce/gig/repository/GigContractorPayoutRepository.java
 com/bharaterp/hr/workforce/gig/service/GigWorkerContractLedger.java
-Industry Verticals — com.bharaterp.industry (102 files)
+```
+
+### Industry Verticals — `com.bharaterp.industry` (102 files)
+
+```
 com/bharaterp/industry/agriculture/controller/AgricultureController.java
 com/bharaterp/industry/agriculture/entity/AgriBatch.java
 com/bharaterp/industry/agriculture/entity/CropBatch.java
@@ -600,7 +837,11 @@ com/bharaterp/industry/retail/service/LoyaltyService.java
 com/bharaterp/industry/services/controller/AdvancedWindsController.java
 com/bharaterp/industry/services/service/AviationLogisticsService.java
 com/bharaterp/industry/services/service/TradePromotionsService.java
-Finance — com.bharaterp.finance (96 files)
+```
+
+### Finance — `com.bharaterp.finance` (96 files)
+
+```
 com/bharaterp/finance/accounting/parallel/controller/ParallelAccountingController.java
 com/bharaterp/finance/accounting/parallel/entity/ParallelLedgerEntry.java
 com/bharaterp/finance/accounting/parallel/repository/ParallelLedgerRepository.java
@@ -697,7 +938,11 @@ com/bharaterp/finance/transferpricing/controller/TransferPricingApiController.ja
 com/bharaterp/finance/transferpricing/entity/TransferPricingLedger.java
 com/bharaterp/finance/transferpricing/repository/TransferPricingLedgerRepository.java
 com/bharaterp/finance/transferpricing/service/TransferPricingEngine.java
-CRM — com.bharaterp.crm (52 files)
+```
+
+### CRM — `com.bharaterp.crm` (52 files)
+
+```
 com/bharaterp/crm/controller/LeadController.java
 com/bharaterp/crm/controller/OpportunityController.java
 com/bharaterp/crm/controller/account/AccountController.java
@@ -750,7 +995,11 @@ com/bharaterp/crm/service/customfield/CustomFieldService.java
 com/bharaterp/crm/service/dealproduct/OpportunityProductService.java
 com/bharaterp/crm/service/marketing/CampaignService.java
 com/bharaterp/crm/service/sequence/EmailSequenceService.java
-Compliance — com.bharaterp.compliance (46 files)
+```
+
+### Compliance — `com.bharaterp.compliance` (46 files)
+
+```
 com/bharaterp/compliance/ehs/controller/EhsIncidentApiController.java
 com/bharaterp/compliance/ehs/entity/EhsIncidentRecord.java
 com/bharaterp/compliance/ehs/incident/EhsIncidentApiController.java
@@ -797,7 +1046,11 @@ com/bharaterp/compliance/whistleblower/WhistleblowerVaultController.java
 com/bharaterp/compliance/whistleblower/WhistleblowerVaultService.java
 com/bharaterp/compliance/whistleblower/entity/WhistleblowerCase.java
 com/bharaterp/compliance/whistleblower/repository/WhistleblowerCaseRepository.java
-Supply Chain — com.bharaterp.supplychain (34 files)
+```
+
+### Supply Chain — `com.bharaterp.supplychain` (34 files)
+
+```
 com/bharaterp/supplychain/agri/controller/MandiTradeApiController.java
 com/bharaterp/supplychain/agri/entity/MandiTradeTicket.java
 com/bharaterp/supplychain/agri/repository/MandiTradeTicketRepository.java
@@ -832,7 +1085,11 @@ com/bharaterp/supplychain/warehouse/picking/WavePickingOptimizationController.ja
 com/bharaterp/supplychain/warehouse/picking/WavePickingOptimizationService.java
 com/bharaterp/supplychain/warehouse/picking/entity/WavePickingJob.java
 com/bharaterp/supplychain/warehouse/picking/repository/WavePickingJobRepository.java
-Audit & Secretarial — com.bharaterp.audit (33 files)
+```
+
+### Audit & Secretarial — `com.bharaterp.audit` (33 files)
+
+```
 com/bharaterp/audit/controller/AuditEngagementController.java
 com/bharaterp/audit/controller/BoardMeetingController.java
 com/bharaterp/audit/controller/SecretarialAuditReportController.java
@@ -866,7 +1123,11 @@ com/bharaterp/audit/service/roc/RocFilingService.java
 com/bharaterp/audit/service/secretarial/SecretarialComplianceService.java
 com/bharaterp/audit/service/secretarial/StatutoryRegisterService.java
 com/bharaterp/audit/service/xbrl/XbrlGeneratorService.java
-Inventory — com.bharaterp.inventory (33 files)
+```
+
+### Inventory — `com.bharaterp.inventory` (33 files)
+
+```
 com/bharaterp/inventory/controller/InventoryApiController.java
 com/bharaterp/inventory/controller/ProductController.java
 com/bharaterp/inventory/controller/credit/CustomerCreditController.java
@@ -900,7 +1161,11 @@ com/bharaterp/inventory/weight/controller/VariableWeightStockController.java
 com/bharaterp/inventory/weight/entity/CatchWeightStock.java
 com/bharaterp/inventory/weight/repository/CatchWeightStockRepository.java
 com/bharaterp/inventory/weight/service/VariableWeightStockEngine.java
-Infrastructure — com.bharaterp.infrastructure (28 files)
+```
+
+### Infrastructure — `com.bharaterp.infrastructure` (28 files)
+
+```
 com/bharaterp/infrastructure/dbgrid/service/ClusterConfigurationRegistry.java
 com/bharaterp/infrastructure/dbgrid/service/ClusterHeartbeatMonitor.java
 com/bharaterp/infrastructure/dbgrid/service/ClusterReplicationAuditor.java
@@ -929,7 +1194,11 @@ com/bharaterp/infrastructure/iotedge/service/MqttBrokerConnector.java
 com/bharaterp/infrastructure/iotedge/service/OpcUaProtocolBridge.java
 com/bharaterp/infrastructure/iotedge/service/RfidBatchIngestionEngine.java
 com/bharaterp/infrastructure/iotedge/service/TelemetryAnomalyFilter.java
-Security — com.bharaterp.security (26 files)
+```
+
+### Security — `com.bharaterp.security` (26 files)
+
+```
 com/bharaterp/security/audit/controller/ActivityLogController.java
 com/bharaterp/security/audit/entity/ActivityLog.java
 com/bharaterp/security/audit/repository/ActivityLogRepository.java
@@ -956,7 +1225,11 @@ com/bharaterp/security/zkp/audit/ZkpAuditAttestationController.java
 com/bharaterp/security/zkp/audit/ZkpAuditAttestationService.java
 com/bharaterp/security/zkp/audit/entity/ZkpAuditAttestation.java
 com/bharaterp/security/zkp/audit/repository/ZkpAuditAttestationRepository.java
-Backend Core / Config — com.bharaterp.backend (25 files)
+```
+
+### Backend Core / Config — `com.bharaterp.backend` (25 files)
+
+```
 com/bharaterp/backend/BackendApplication.java
 com/bharaterp/backend/config/GlobalizationService.java
 com/bharaterp/backend/config/JwtAuthenticationFilter.java
@@ -982,7 +1255,11 @@ com/bharaterp/backend/security/IoTEventService.java
 com/bharaterp/backend/security/ZeroTrustMaskingService.java
 com/bharaterp/backend/service/AuthService.java
 com/bharaterp/backend/service/UserDetailsServiceImpl.java
-Core Platform Utilities — com.bharaterp.core (22 files)
+```
+
+### Core Platform Utilities — `com.bharaterp.core` (22 files)
+
+```
 com/bharaterp/core/audit/AuditTrailInterceptor.java
 com/bharaterp/core/audit/controller/SecurityAuditController.java
 com/bharaterp/core/audit/entity/SecurityAuditBlock.java
@@ -1005,7 +1282,11 @@ com/bharaterp/core/tx/coordinator/entity/DistributedTransactionRegistry.java
 com/bharaterp/core/tx/coordinator/entity/TransactionParticipantNode.java
 com/bharaterp/core/tx/coordinator/repository/DistributedTransactionRegistryRepository.java
 com/bharaterp/core/tx/coordinator/repository/TransactionParticipantNodeRepository.java
-GST & Tax — com.bharaterp.gst (19 files)
+```
+
+### GST & Tax — `com.bharaterp.gst` (19 files)
+
+```
 com/bharaterp/gst/EWayBill.java
 com/bharaterp/gst/EWayBillController.java
 com/bharaterp/gst/EWayBillRepository.java
@@ -1025,7 +1306,11 @@ com/bharaterp/gst/service/GstCalculationService.java
 com/bharaterp/gst/service/GstInvoiceService.java
 com/bharaterp/gst/service/GstrFilingService.java
 com/bharaterp/gst/service/HsnMappingService.java
-Sales — com.bharaterp.sales (19 files)
+```
+
+### Sales — `com.bharaterp.sales` (19 files)
+
+```
 com/bharaterp/sales/controller/SalesInvoiceApiController.java
 com/bharaterp/sales/cpq/controller/CpqEngineController.java
 com/bharaterp/sales/cpq/entity/CpqQuote.java
@@ -1045,7 +1330,11 @@ com/bharaterp/sales/tiered/pricing/controller/TieredVolumePricingController.java
 com/bharaterp/sales/tiered/pricing/entity/TieredVolumePricing.java
 com/bharaterp/sales/tiered/pricing/repository/TieredVolumePricingRepository.java
 com/bharaterp/sales/tiered/pricing/service/TieredVolumePricingEngineService.java
-Autonomous Agents — com.bharaterp.autonomous (18 files)
+```
+
+### Autonomous Agents — `com.bharaterp.autonomous` (18 files)
+
+```
 com/bharaterp/autonomous/agent/service/CollectionsAgent.java
 com/bharaterp/autonomous/agent/service/InventoryTaskingAgent.java
 com/bharaterp/autonomous/agent/service/SupplyPlanningAgent.java
@@ -1064,7 +1353,11 @@ com/bharaterp/autonomous/industry/IndustryAutonomyController.java
 com/bharaterp/autonomous/industry/ManufacturingOeeCalculator.java
 com/bharaterp/autonomous/industry/PharmaSupplyChainAgent.java
 com/bharaterp/autonomous/industry/SmartCityOrchestrator.java
-AI / Agent Orchestration — com.bharaterp.ai (17 files)
+```
+
+### AI / Agent Orchestration — `com.bharaterp.ai` (17 files)
+
+```
 com/bharaterp/ai/agent/controller/AgentHubController.java
 com/bharaterp/ai/agent/controller/AiHubExtensionController.java
 com/bharaterp/ai/agent/entity/AgentRegistry.java
@@ -1082,7 +1375,11 @@ com/bharaterp/ai/orchestrator/service/MultiAgentOrchestratorService.java
 com/bharaterp/ai/rag/entity/KnowledgeDocument.java
 com/bharaterp/ai/rag/repository/KnowledgeDocumentRepository.java
 com/bharaterp/ai/rag/service/RagPipelineService.java
-Platform Services — com.bharaterp.platform (17 files)
+```
+
+### Platform Services — `com.bharaterp.platform` (17 files)
+
+```
 com/bharaterp/platform/archive/controller/SystemDataArchiverController.java
 com/bharaterp/platform/archive/entity/SystemArchiveRegistry.java
 com/bharaterp/platform/archive/repository/SystemArchiveRegistryRepository.java
@@ -1100,7 +1397,11 @@ com/bharaterp/platform/tenant/controller/MultiTenantSchemaController.java
 com/bharaterp/platform/tenant/entity/TenantRoutingRegistry.java
 com/bharaterp/platform/tenant/repository/TenantRoutingRegistryRepository.java
 com/bharaterp/platform/tenant/service/MultiTenantSchemaRouter.java
-Integration & Connectors — com.bharaterp.integration (14 files)
+```
+
+### Integration & Connectors — `com.bharaterp.integration` (14 files)
+
+```
 com/bharaterp/integration/blockchain/entity/BlockchainBlock.java
 com/bharaterp/integration/blockchain/repository/BlockchainBlockRepository.java
 com/bharaterp/integration/blockchain/service/BlockchainAuditService.java
@@ -1115,7 +1416,11 @@ com/bharaterp/integration/webhook/controller/WebhookController.java
 com/bharaterp/integration/webhook/entity/WebhookSubscription.java
 com/bharaterp/integration/webhook/repository/WebhookSubscriptionRepository.java
 com/bharaterp/integration/webhook/service/WebhookDispatchService.java
-ESG & Sustainability — com.bharaterp.esg (13 files)
+```
+
+### ESG & Sustainability — `com.bharaterp.esg` (13 files)
+
+```
 com/bharaterp/esg/carbon/controller/CarbonEsgController.java
 com/bharaterp/esg/carbon/service/CarbonFootprintTracker.java
 com/bharaterp/esg/carbon/service/CarbonGreenLedgerService.java
@@ -1129,7 +1434,11 @@ com/bharaterp/esg/universal/UniversalEsgController.java
 com/bharaterp/esg/vision/green/EInvoicePeppolService.java
 com/bharaterp/esg/vision/green/EsgVisionGreenLedgerService.java
 com/bharaterp/esg/vision/green/controller/EsgComplianceController.java
-Agentic Mesh — com.bharaterp.agentic (11 files)
+```
+
+### Agentic Mesh — `com.bharaterp.agentic` (11 files)
+
+```
 com/bharaterp/agentic/mesh/AIMeshCoordinator.java
 com/bharaterp/agentic/mesh/AgenticOrchestrator.java
 com/bharaterp/agentic/mesh/HeadlessApiGateway.java
@@ -1141,7 +1450,11 @@ com/bharaterp/agentic/orchestrator/entity/JouleWorkWorkspace.java
 com/bharaterp/agentic/orchestrator/service/AgentOrchestrationEngine.java
 com/bharaterp/agentic/orchestrator/service/KnowledgeGraphService.java
 com/bharaterp/agentic/orchestrator/service/RAPTService.java
-Logistics — com.bharaterp.logistics (10 files)
+```
+
+### Logistics — `com.bharaterp.logistics` (10 files)
+
+```
 com/bharaterp/logistics/multimodal/controller/LogisticsController.java
 com/bharaterp/logistics/multimodal/entity/ConsignmentShipment.java
 com/bharaterp/logistics/multimodal/entity/CustomsShipment.java
@@ -1152,7 +1465,11 @@ com/bharaterp/logistics/multimodal/repository/FreightConsignmentRepository.java
 com/bharaterp/logistics/multimodal/repository/VehicleRepository.java
 com/bharaterp/logistics/multimodal/service/GlobalCustomsClearanceService.java
 com/bharaterp/logistics/multimodal/service/NationalLogisticsVahanService.java
-Quantum (R&D / Experimental) — com.bharaterp.quantum (9 files)
+```
+
+### Quantum (R&D / Experimental) — `com.bharaterp.quantum` (9 files)
+
+```
 com/bharaterp/quantum/core/controller/QuantumController.java
 com/bharaterp/quantum/core/crypto/QuantumSafeCryptoEngine.java
 com/bharaterp/quantum/core/entity/QuantumComputationLog.java
@@ -1162,7 +1479,11 @@ com/bharaterp/quantum/core/repository/QuantumComputationLogRepository.java
 com/bharaterp/quantum/core/service/PostQuantumCryptoService.java
 com/bharaterp/quantum/core/service/QuantumKeyDistribution.java
 com/bharaterp/quantum/core/service/QuantumOptimizationEngine.java
-Manufacturing — com.bharaterp.manufacturing (8 files)
+```
+
+### Manufacturing — `com.bharaterp.manufacturing` (8 files)
+
+```
 com/bharaterp/manufacturing/shopfloor/controller/ShopFloorSequencingController.java
 com/bharaterp/manufacturing/shopfloor/entity/ShopFloorJob.java
 com/bharaterp/manufacturing/shopfloor/repository/ShopFloorJobRepository.java
@@ -1171,7 +1492,11 @@ com/bharaterp/manufacturing/tooling/ToolingCalibrationMonitorController.java
 com/bharaterp/manufacturing/tooling/ToolingCalibrationMonitorService.java
 com/bharaterp/manufacturing/tooling/entity/ToolingCalibrationLog.java
 com/bharaterp/manufacturing/tooling/repository/ToolingCalibrationLogRepository.java
-Marketplace — com.bharaterp.marketplace (7 files)
+```
+
+### Marketplace — `com.bharaterp.marketplace` (7 files)
+
+```
 com/bharaterp/marketplace/agent/AgentMeteringBillingService.java
 com/bharaterp/marketplace/agent/AgentSmartContract.java
 com/bharaterp/marketplace/agent/AgentVendorRegistry.java
@@ -1179,91 +1504,182 @@ com/bharaterp/marketplace/controller/MarketplaceController.java
 com/bharaterp/marketplace/entity/PartnerAgent.java
 com/bharaterp/marketplace/service/AgentBillingService.java
 com/bharaterp/marketplace/service/MarketplaceListingService.java
-Blockchain — com.bharaterp.blockchain (6 files)
+```
+
+### Blockchain — `com.bharaterp.blockchain` (6 files)
+
+```
 com/bharaterp/blockchain/scm/service/BlockchainLedgerService.java
 com/bharaterp/blockchain/scm/service/IoTBlockchainBridge.java
 com/bharaterp/blockchain/scm/service/PharmaSupplyChainService.java
 com/bharaterp/blockchain/scm/service/SmartContractEngine.java
 com/bharaterp/blockchain/vision/scm/service/AntiCounterfeitPharmaEngine.java
 com/bharaterp/blockchain/vision/scm/service/RealTimeTraceabilityBridge.java
-Accounting (Ledger Core) — com.bharaterp.account (5 files)
+```
+
+### Accounting (Ledger Core) — `com.bharaterp.account` (5 files)
+
+```
 com/bharaterp/account/controller/VoucherController.java
 com/bharaterp/account/entity/Voucher.java
 com/bharaterp/account/entity/VoucherLine.java
 com/bharaterp/account/repository/VoucherRepository.java
 com/bharaterp/account/service/VoucherService.java
-Composable Architecture — com.bharaterp.composable (5 files)
+```
+
+### Composable Architecture — `com.bharaterp.composable` (5 files)
+
+```
 com/bharaterp/composable/entity/ExtensionRegistry.java
 com/bharaterp/composable/service/ApiGatewayService.java
 com/bharaterp/composable/service/CleanCoreValidator.java
 com/bharaterp/composable/service/DynamicPluginExtensionEngine.java
 com/bharaterp/composable/service/EventMeshService.java
-Procurement — com.bharaterp.procurement (5 files)
+```
+
+### Procurement — `com.bharaterp.procurement` (5 files)
+
+```
 com/bharaterp/procurement/controller/PurchaseOrderApiController.java
 com/bharaterp/procurement/entity/PurchaseOrder.java
 com/bharaterp/procurement/repository/PurchaseOrderRepository.java
 com/bharaterp/procurement/vms/service/VendorAssessmentService.java
 com/bharaterp/procurement/vms/service/VendorScorecardService.java
-Banking (UPI) — com.bharaterp.banking (4 files)
+```
+
+### Banking (UPI) — `com.bharaterp.banking` (4 files)
+
+```
 com/bharaterp/banking/controller/UpiPaymentController.java
 com/bharaterp/banking/entity/UpiTransaction.java
 com/bharaterp/banking/repository/UpiTransactionRepository.java
 com/bharaterp/banking/service/UpiPaymentService.java
-Financial AI (CFO Agent) — com.bharaterp.financial (4 files)
+```
+
+### Financial AI (CFO Agent) — `com.bharaterp.financial` (4 files)
+
+```
 com/bharaterp/financial/controller/ai/CfoAgentController.java
 com/bharaterp/financial/entity/ai/CfoAgentProfile.java
 com/bharaterp/financial/repository/ai/CfoAgentProfileRepository.java
 com/bharaterp/financial/service/ai/CfoAgentService.java
-Cognitive Digital Twin — com.bharaterp.cognitive (3 files)
+```
+
+### Cognitive Digital Twin — `com.bharaterp.cognitive` (3 files)
+
+```
 com/bharaterp/cognitive/twin/ContinuousPlanningService.java
 com/bharaterp/cognitive/twin/EnterpriseDigitalTwin.java
 com/bharaterp/cognitive/twin/ScenarioSimulationEngine.java
-Decision Intelligence — com.bharaterp.decision (3 files)
+```
+
+### Decision Intelligence — `com.bharaterp.decision` (3 files)
+
+```
 com/bharaterp/decision/vision/intelligence/service/ContinuousForecastingEngine.java
 com/bharaterp/decision/vision/intelligence/service/InvisibleCognitivePlatform.java
 com/bharaterp/decision/vision/intelligence/service/WhatIfSimulationModel.java
-Migration (Strangler Pattern) — com.bharaterp.migration (3 files)
+```
+
+### Migration (Strangler Pattern) — `com.bharaterp.migration` (3 files)
+
+```
 com/bharaterp/migration/strangler/controller/MigrationController.java
 com/bharaterp/migration/strangler/service/MicroservicesGateway.java
 com/bharaterp/migration/strangler/service/MonolithicDecoupler.java
-Sovereign Cloud / GDPR — com.bharaterp.sovereign (3 files)
+```
+
+### Sovereign Cloud / GDPR — `com.bharaterp.sovereign` (3 files)
+
+```
 com/bharaterp/sovereign/cloud/service/DataResidencyService.java
 com/bharaterp/sovereign/cloud/service/GDPRComplianceService.java
 com/bharaterp/sovereign/cloud/service/LocalizationEngine.java
-Universal Billing — com.bharaterp.universal (3 files)
+```
+
+### Universal Billing — `com.bharaterp.universal` (3 files)
+
+```
 com/bharaterp/universal/controller/UniversalBillingApiController.java
 com/bharaterp/universal/entity/UniversalInvoice.java
 com/bharaterp/universal/repository/UniversalInvoiceRepository.java
-Deployment Tools — com.bharaterp.deployment (2 files)
+```
+
+### Deployment Tools — `com.bharaterp.deployment` (2 files)
+
+```
 com/bharaterp/deployment/service/GlobalEndpointSmokeTester.java
 com/bharaterp/deployment/service/MicroserviceDecouplerRegistry.java
-Global / IPO Compliance — com.bharaterp.global (2 files)
+```
+
+### Global / IPO Compliance — `com.bharaterp.global` (2 files)
+
+```
 com/bharaterp/global/service/InvestorReportingService.java
 com/bharaterp/global/service/IpoComplianceService.java
-Government API Integration — com.bharaterp.govt (2 files)
+```
+
+### Government API Integration — `com.bharaterp.govt` (2 files)
+
+```
 com/bharaterp/govt/controller/GovtApiController.java
 com/bharaterp/govt/service/GovtApiService.java
-Reporting & Dashboards — com.bharaterp.reporting (2 files)
+```
+
+### Reporting & Dashboards — `com.bharaterp.reporting` (2 files)
+
+```
 com/bharaterp/reporting/controller/DashboardController.java
 com/bharaterp/reporting/service/DashboardService.java
-Spatial / AR-VR — com.bharaterp.spatial (2 files)
+```
+
+### Spatial / AR-VR — `com.bharaterp.spatial` (2 files)
+
+```
 com/bharaterp/spatial/entity/SpatialWorkspace.java
 com/bharaterp/spatial/service/ArVrIntegrationService.java
-Digital Workforce — com.bharaterp.workforce (2 files)
+```
+
+### Digital Workforce — `com.bharaterp.workforce` (2 files)
+
+```
 com/bharaterp/workforce/digital/service/LearningExperienceManager.java
 com/bharaterp/workforce/digital/service/SkillsGapAnalyzer.java
-Decision Intelligence (Scenario Modeling) — com.bharaterp.decisionintelligence (1 files)
+```
+
+### Decision Intelligence (Scenario Modeling) — `com.bharaterp.decisionintelligence` (1 files)
+
+```
 com/bharaterp/decisionintelligence/service/ScenarioModelingService.java
-Cognitive Mesh (Overlord) — com.bharaterp.overlord (1 files)
+```
+
+### Cognitive Mesh (Overlord) — `com.bharaterp.overlord` (1 files)
+
+```
 com/bharaterp/overlord/service/OmnipresentCognitiveMesh.java
-Secretarial Compliance — com.bharaterp.secretarial (1 files)
+```
+
+### Secretarial Compliance — `com.bharaterp.secretarial` (1 files)
+
+```
 com/bharaterp/secretarial/compliance/BoardMeetingService.java
-XBRL Filing — com.bharaterp.xbrl (1 files)
+```
+
+### XBRL Filing — `com.bharaterp.xbrl` (1 files)
+
+```
 com/bharaterp/xbrl/filing/service/XbrlTaxonomyMappingService.java
-________________________________________
-Frontend Structure
+```
+
+---
+
+## Frontend Structure
+
 The frontend is a React 18 single-page application, built with Vite and styled using Tailwind CSS.
-Known Structure
+
+### Known Structure
+
+```
 frontend/
 ├── index.html
 ├── package.json
@@ -1279,62 +1695,95 @@ frontend/
         ├── payroll/            # Payroll disbursal console UI
         ├── audit/              # Audit & forensic scanner UI
         └── cockpits/           # Advanced Cockpits UI components
-Complete Frontend File Index
-📝 Pending: the full recursive frontend file list has not yet been provided. Once available, it will be embedded here in the same domain-grouped format as the backend index above.
-To generate it, run this from the project root:
-cd C:\bharat_erp_solution\frontend
-Get-ChildItem -Path .\src -Recurse -Include *.jsx,*.js,*.css |
-  ForEach-Object { $_.FullName.Substring((Resolve-Path .\src).Path.Length + 1) } |
-  Sort-Object | Out-File -Encoding utf8 all_frontend_files.txt
-Get-Content .\all_frontend_files.txt
-Paste the output back and it will be merged into this section.
-________________________________________
-Tech Stack
-Layer	Technology	Version
-Backend Runtime	Java (LTS)	21.0.11
-Backend Framework	Spring Boot (Maven)	—
-Security	Spring Security + JWT	—
-ORM / Persistence	Spring Data JPA	—
-Caching	Redis	via Spring Data Redis
-Messaging	Kafka, RabbitMQ	via KafkaConfig, RabbitMqConfig
-Document Generation	iText	9.6.0 (itext-core)
-API Documentation	Swagger / OpenAPI	via SwaggerConfig, OpenApiMetadataConfig
-Frontend Runtime	Node.js	v22.16.0
-Frontend Framework	React	18.3.1
-Build Tool (frontend)	Vite	5.4.1
-Styling	Tailwind CSS	3.4.1
-Icons	lucide-react	0.344.0
-Build Tool (backend)	Maven Wrapper (mvnw)	—
-Internal Audit Tooling	Custom PowerShell static-analysis framework	v2.0
-________________________________________
-Getting Started
-Prerequisites
-•	Java 21 (LTS)
-•	Node.js 18+ (tested on v22.16.0)
-•	MySQL (or compatible relational database)
-•	Redis
-Clone
+```
+
+### Complete Frontend File Index
+
+> 📝 **Pending:** the full recursive frontend file list has not yet been provided. Once available, it will be embedded here in the same domain-grouped format as the backend index above.
+>
+> To generate it, run this from the project root:
+> ```powershell
+> cd C:\bharat_erp_solution\frontend
+> Get-ChildItem -Path .\src -Recurse -Include *.jsx,*.js,*.css |
+>   ForEach-Object { $_.FullName.Substring((Resolve-Path .\src).Path.Length + 1) } |
+>   Sort-Object | Out-File -Encoding utf8 all_frontend_files.txt
+> Get-Content .\all_frontend_files.txt
+> ```
+> Paste the output back and it will be merged into this section.
+
+---
+
+## Tech Stack
+
+| Layer | Technology | Version |
+|---|---|---|
+| Backend Runtime | Java (LTS) | 21.0.11 |
+| Backend Framework | Spring Boot (Maven) | — |
+| Security | Spring Security + JWT | — |
+| ORM / Persistence | Spring Data JPA | — |
+| Caching | Redis | via Spring Data Redis |
+| Messaging | Kafka, RabbitMQ | via `KafkaConfig`, `RabbitMqConfig` |
+| Document Generation | iText | 9.6.0 (`itext-core`) |
+| API Documentation | Swagger / OpenAPI | via `SwaggerConfig`, `OpenApiMetadataConfig` |
+| Frontend Runtime | Node.js | v22.16.0 |
+| Frontend Framework | React | 18.3.1 |
+| Build Tool (frontend) | Vite | 5.4.1 |
+| Styling | Tailwind CSS | 3.4.1 |
+| Icons | lucide-react | 0.344.0 |
+| Build Tool (backend) | Maven Wrapper (`mvnw`) | — |
+| Internal Audit Tooling | Custom PowerShell static-analysis framework | v2.0 |
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Java 21 (LTS)
+- Node.js 18+ (tested on v22.16.0)
+- MySQL (or compatible relational database)
+- Redis
+
+### Clone
+
+```bash
 git clone <your-repo-url>
 cd bharat_erp_solution
-Backend Setup
+```
+
+### Backend Setup
+
+```bash
 cd backend
 ./mvnw clean compile
 ./mvnw spring-boot:run
-Last verified build: BUILD SUCCESS, compiling 833 source files in ~22 seconds (Java 21, javac with debug parameters, release 21).
-Frontend Setup
+```
+
+Last verified build: **BUILD SUCCESS**, compiling 833 source files in ~22 seconds (Java 21, `javac` with debug parameters, release 21).
+
+### Frontend Setup
+
+```bash
 cd frontend
 npm install
 npm run dev       # local development server
 npm run build     # production build (outputs to /dist)
 npm run preview   # preview the production build locally (localhost:4173)
-Full Local Stack
-1.	Start MySQL and Redis locally (or via Docker).
-2.	Start the backend (./mvnw spring-boot:run).
-3.	Start the frontend (npm run dev).
-4.	Open the app in your browser and log in via the portal.
-________________________________________
-Configuration
-Backend configuration lives in application.properties / environment variables:
+```
+
+### Full Local Stack
+
+1. Start MySQL and Redis locally (or via Docker).
+2. Start the backend (`./mvnw spring-boot:run`).
+3. Start the frontend (`npm run dev`).
+4. Open the app in your browser and log in via the portal.
+
+---
+
+## Configuration
+
+Backend configuration lives in `application.properties` / environment variables:
+
+```properties
 # Database
 spring.datasource.url=jdbc:mysql://localhost:3306/bharat_erp_core_ledger
 spring.datasource.username=${DB_USERNAME:root}
@@ -1351,44 +1800,60 @@ spring.redis.port=${REDIS_PORT:6379}
 # Messaging (optional, if Kafka/RabbitMQ features are enabled)
 spring.kafka.bootstrap-servers=${KAFKA_BROKERS:localhost:9092}
 spring.rabbitmq.host=${RABBITMQ_HOST:localhost}
-Always provide DB_PASSWORD and JWT_SECRET via environment variables in any shared or production environment — never hardcode credentials in source control.
-________________________________________
-API Documentation
-Conventions
-•	Base path: /api/v1/{domain} (e.g. /api/v1/crm/leads, /api/v1/autonomous-treasury)
-•	Authentication: Authorization: Bearer <JWT> header on all protected endpoints
-•	Response format: JSON, with domain-specific payload DTOs
-•	Error handling: centralized via @ControllerAdvice global exception interceptors, returning structured error responses with appropriate HTTP status codes
-•	Interactive API docs: available via Swagger/OpenAPI (see SwaggerConfig, OpenApiMetadataConfig) — typically at /swagger-ui.html once the backend is running
-Representative Endpoints by Domain
-Domain	Example Endpoint	Controller
-Ledger	POST /api/v1/ledger/vouchers	VoucherController
-CRM — Leads	GET/POST /api/v1/crm/leads	LeadController
-CRM — Opportunities	GET/POST /api/v1/crm/opportunities	OpportunityController
-Payroll	POST /api/v1/hr/payroll/run	PayrollController
-HR — Employees	GET/POST /api/v1/hr/employees	EmployeeController
-Audit — Engagements	GET/POST /api/v1/audit/engagements	AuditEngagementController
-Audit — ROC Filings	POST /api/v1/audit/roc/filings	RocFilingController
-GST — Invoices	POST /api/v1/gst/invoices	GstInvoiceController
-Inventory — Products	GET/POST /api/v1/inventory/products	ProductController
-Inventory — Warehouse	GET /api/v1/inventory/warehouse	WarehouseController
-Finance — Accounts Payable	GET/POST /api/v1/finance/ap	AccountsPayableController
-Finance — Budget	GET/POST /api/v1/finance/budget	BudgetController
-Security — RBAC	GET/POST /api/v1/security/rbac	RbacController
-Auth	POST /api/v1/auth/login	AuthController
-________________________________________
-Architecture Governance & ADR Process
-The core architecture is version-locked following the current blueprint revision. Any structural change — new domain package, new cockpit, cross-cutting infrastructure change — must go through a formal Architecture Decision Record (ADR) before merging.
-What Requires an ADR
-•	Adding a new top-level domain package under com.bharaterp
-•	Changing the authentication/authorization model
-•	Introducing a new persistence technology or messaging system
-•	Any change affecting more than one domain package's public service contracts
-What Doesn't Require an ADR
-•	Bug fixes within an existing service/controller
-•	Adding a new field to an existing entity (with a corresponding migration)
-•	New endpoints within an already-established domain
-ADR Format
+```
+
+Always provide `DB_PASSWORD` and `JWT_SECRET` via environment variables in any shared or production environment — never hardcode credentials in source control.
+
+---
+
+## API Documentation
+
+### Conventions
+- Base path: `/api/v1/{domain}` (e.g. `/api/v1/crm/leads`, `/api/v1/autonomous-treasury`)
+- Authentication: `Authorization: Bearer <JWT>` header on all protected endpoints
+- Response format: JSON, with domain-specific payload DTOs
+- Error handling: centralized via `@ControllerAdvice` global exception interceptors, returning structured error responses with appropriate HTTP status codes
+- Interactive API docs: available via Swagger/OpenAPI (see `SwaggerConfig`, `OpenApiMetadataConfig`) — typically at `/swagger-ui.html` once the backend is running
+
+### Representative Endpoints by Domain
+
+| Domain | Example Endpoint | Controller |
+|---|---|---|
+| Ledger | `POST /api/v1/ledger/vouchers` | `VoucherController` |
+| CRM — Leads | `GET/POST /api/v1/crm/leads` | `LeadController` |
+| CRM — Opportunities | `GET/POST /api/v1/crm/opportunities` | `OpportunityController` |
+| Payroll | `POST /api/v1/hr/payroll/run` | `PayrollController` |
+| HR — Employees | `GET/POST /api/v1/hr/employees` | `EmployeeController` |
+| Audit — Engagements | `GET/POST /api/v1/audit/engagements` | `AuditEngagementController` |
+| Audit — ROC Filings | `POST /api/v1/audit/roc/filings` | `RocFilingController` |
+| GST — Invoices | `POST /api/v1/gst/invoices` | `GstInvoiceController` |
+| Inventory — Products | `GET/POST /api/v1/inventory/products` | `ProductController` |
+| Inventory — Warehouse | `GET /api/v1/inventory/warehouse` | `WarehouseController` |
+| Finance — Accounts Payable | `GET/POST /api/v1/finance/ap` | `AccountsPayableController` |
+| Finance — Budget | `GET/POST /api/v1/finance/budget` | `BudgetController` |
+| Security — RBAC | `GET/POST /api/v1/security/rbac` | `RbacController` |
+| Auth | `POST /api/v1/auth/login` | `AuthController` |
+
+---
+
+## Architecture Governance & ADR Process
+
+The core architecture is version-locked following the current blueprint revision. Any structural change — new domain package, new cockpit, cross-cutting infrastructure change — must go through a formal **Architecture Decision Record (ADR)** before merging.
+
+### What Requires an ADR
+- Adding a new top-level domain package under `com.bharaterp`
+- Changing the authentication/authorization model
+- Introducing a new persistence technology or messaging system
+- Any change affecting more than one domain package's public service contracts
+
+### What Doesn't Require an ADR
+- Bug fixes within an existing service/controller
+- Adding a new field to an existing entity (with a corresponding migration)
+- New endpoints within an already-established domain
+
+### ADR Format
+
+```markdown
 # ADR-XXXX: <Title>
 
 ## Status
@@ -1402,65 +1867,98 @@ What are we doing about it?
 
 ## Consequences
 What becomes easier or harder as a result?
-Development Workflow
-•	Backend changes follow a step-by-step, file-level workflow with a clean compile verification (./mvnw clean compile) after each change — never batch multiple unverified changes together.
-•	Always read the current file content before editing; don't rely on assumptions about what a file contains.
-•	Frontend changes are validated against the existing cockpit navigation and dashboard state patterns before merging.
-•	Naming conventions follow domain-first packaging (com.bharaterp.<domain>.<subdomain>.<layer>) to keep controllers, services, entities, and repositories consistently discoverable.
-________________________________________
-Contributing Guide
-Branching Strategy
-•	main — production-ready code only
-•	feature/<domain>-<short-description> — new feature work (e.g. feature/hr-gratuity-calc)
-•	fix/<short-description> — bug fixes
-•	audit/<short-description> — audit/refactor work arising from code quality reviews
-Commit Message Convention
+```
+
+### Development Workflow
+- Backend changes follow a step-by-step, file-level workflow with a clean compile verification (`./mvnw clean compile`) after each change — never batch multiple unverified changes together.
+- Always read the current file content before editing; don't rely on assumptions about what a file contains.
+- Frontend changes are validated against the existing cockpit navigation and dashboard state patterns before merging.
+- Naming conventions follow domain-first packaging (`com.bharaterp.<domain>.<subdomain>.<layer>`) to keep controllers, services, entities, and repositories consistently discoverable.
+
+---
+
+## Contributing Guide
+
+### Branching Strategy
+- `main` — production-ready code only
+- `feature/<domain>-<short-description>` — new feature work (e.g. `feature/hr-gratuity-calc`)
+- `fix/<short-description>` — bug fixes
+- `audit/<short-description>` — audit/refactor work arising from code quality reviews
+
+### Commit Message Convention
+
+```
 <type>(<domain>): <short summary>
 
 <optional longer description>
-Types: feat, fix, refactor, docs, test, chore, audit
+```
+
+Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `audit`
+
 Example:
+```
 feat(hr): add gratuity slab calculation for FY2026-27
 
 Implements updated gratuity ceiling per latest Payment of Gratuity
 (Amendment) rules. Adds unit tests for edge cases at 5-year boundary.
-Pull Request Checklist
-•	[ ] ./mvnw clean compile passes with no errors (backend changes)
-•	[ ] npm run build passes with no errors (frontend changes)
-•	[ ] New services are wired to a real repository — no placeholder/stub logic
-•	[ ] No hardcoded credentials or secrets introduced
-•	[ ] Relevant section of this README / file index updated if the change adds/removes/moves files
-•	[ ] For structural changes, an ADR has been added under docs/adr/
-Code Style
-•	Java: standard Spring Boot conventions — Controller → Service → Repository layering, DTOs for request/response payloads, @ControllerAdvice for exception handling
-•	React: functional components with hooks, Tailwind utility classes for styling, lucide-react for icons
-________________________________________
-Changelog
-Backend Build Milestones
-Date	Java Files	Notes
-Earlier baseline	525	First full scan by the internal Enterprise Validator tool (v2.0)
-Jul 9, 2026	806	99% health score on keyword-based scan; 1 stub file, 1 empty-method file identified
-Jul 10, 2026	811	Incremental growth
-Jul 15, 2026	833	Latest clean Maven build — BUILD SUCCESS, verified via full recursive file scan
-Feature Milestones (from project blueprint history)
-•	Phase 2 (June 2026): HR & Payroll module built out — Employee master, Attendance/Leave, Payroll (PF/ESI/PT/TDS), Full & Final Settlement, Gratuity, TDS New Tax Regime FY2025-26, Bank Disbursement CSV, Shift scheduling, Expense claims, Performance Goals, Appraisal cycles.
-•	Phase 5 (June 2026): CA/CS Audit Suite added.
-•	Blueprint v2.0 → v3.0: Feature count grew from 248 to 310+ across 20 modules, adding BFSI & Treasury, Sustainability & ESG, and Platform & Developer Ecosystem modules.
-•	Blueprint v8.0: Governance-locked feature freeze — all further structural changes now require a formal ADR.
-•	July 2026: Multi-pass PowerShell audit campaign (Steps 1–6b + Master Audit) across the full codebase — duplicate class-name resolution, hollow-implementation fixes, Spring bean-name collision fixes, and restoration of real AES-256-GCM encryption + genuine persistence in WhistleblowerVaultService.
-________________________________________
-Roadmap
-•	Expand the Advanced Cockpits suite with additional industry-specific dashboards
-•	Deepen automated test coverage across Ledger, Payroll, and Audit modules
-•	CI/CD pipeline integration for automated build & deployment
-•	Complete the frontend file index (pending full file list)
-•	Public API documentation portal for third-party integrations
-•	Multi-tenant support for enterprise group companies (building on the existing platform.tenant package)
-•	Formal ADR archive under docs/adr/ for all structural decisions going forward
-________________________________________
-License
-Proprietary — All rights reserved unless otherwise licensed by the project owner.
-________________________________________
-Author
-Kartik Choudhary B.Tech CSE, Raj Kumar Goel Institute of Technology and Management, Ghaziabad (AKTU) 📧 kartikmzn7@gmail.com 🔗 GitHub · LinkedIn
+```
 
+### Pull Request Checklist
+- [ ] `./mvnw clean compile` passes with no errors (backend changes)
+- [ ] `npm run build` passes with no errors (frontend changes)
+- [ ] New services are wired to a real repository — no placeholder/stub logic
+- [ ] No hardcoded credentials or secrets introduced
+- [ ] Relevant section of this README / file index updated if the change adds/removes/moves files
+- [ ] For structural changes, an ADR has been added under `docs/adr/`
+
+### Code Style
+- Java: standard Spring Boot conventions — `Controller` → `Service` → `Repository` layering, DTOs for request/response payloads, `@ControllerAdvice` for exception handling
+- React: functional components with hooks, Tailwind utility classes for styling, `lucide-react` for icons
+
+---
+
+## Changelog
+
+### Backend Build Milestones
+
+| Date | Java Files | Notes |
+|---|---|---|
+| Earlier baseline | 525 | First full scan by the internal Enterprise Validator tool (v2.0) |
+| Jul 9, 2026 | 806 | 99% health score on keyword-based scan; 1 stub file, 1 empty-method file identified |
+| Jul 10, 2026 | 811 | Incremental growth |
+| Jul 15, 2026 | 833 | Latest clean Maven build — **BUILD SUCCESS**, verified via full recursive file scan |
+
+### Feature Milestones (from project blueprint history)
+
+- **Phase 2 (June 2026):** HR & Payroll module built out — Employee master, Attendance/Leave, Payroll (PF/ESI/PT/TDS), Full & Final Settlement, Gratuity, TDS New Tax Regime FY2025-26, Bank Disbursement CSV, Shift scheduling, Expense claims, Performance Goals, Appraisal cycles.
+- **Phase 5 (June 2026):** CA/CS Audit Suite added.
+- **Blueprint v2.0 → v3.0:** Feature count grew from 248 to 310+ across 20 modules, adding BFSI & Treasury, Sustainability & ESG, and Platform & Developer Ecosystem modules.
+- **Blueprint v8.0:** Governance-locked feature freeze — all further structural changes now require a formal ADR.
+- **July 2026:** Multi-pass PowerShell audit campaign (Steps 1–6b + Master Audit) across the full codebase — duplicate class-name resolution, hollow-implementation fixes, Spring bean-name collision fixes, and restoration of real AES-256-GCM encryption + genuine persistence in `WhistleblowerVaultService`.
+
+---
+
+## Roadmap
+
+- Expand the Advanced Cockpits suite with additional industry-specific dashboards
+- Deepen automated test coverage across Ledger, Payroll, and Audit modules
+- CI/CD pipeline integration for automated build & deployment
+- Complete the frontend file index (pending full file list)
+- Public API documentation portal for third-party integrations
+- Multi-tenant support for enterprise group companies (building on the existing `platform.tenant` package)
+- Formal ADR archive under `docs/adr/` for all structural decisions going forward
+
+---
+
+## License
+
+Proprietary — All rights reserved unless otherwise licensed by the project owner.
+
+---
+
+## Author
+
+**Kartik Choudhary**
+B.Tech CSE, Raj Kumar Goel Institute of Technology and Management, Ghaziabad (AKTU)
+📧 [kartikmzn7@gmail.com](mailto:kartikmzn7@gmail.com)
+🔗 [GitHub](https://github.com/kartikchoudharyaktu) · [LinkedIn](https://linkedin.com/in/kartik-choudharyaktu)
